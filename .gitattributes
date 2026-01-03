@@ -1,2 +1,205 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Git Attributes Configuration
+
+# Автоматическое определение типов файлов и настройка поведения Git
+
+# === Text Files ===
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.lock text eol=lf
+*.gitignore text eol=lf
+
+# === Code Files ===
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.py text eol=lf
+*.go text eol=lf
+*.java text eol=lf
+*.c text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.php text eol=lf
+*.rs text eol=lf
+*.rb text eol=lf
+*.swift text eol=lf
+*.kt text eol=lf
+*.dart text eol=lf
+
+# === SQL Files ===
+*.sql text eol=lf
+*.pgsql text eol=lf
+*.mysql text eol=lf
+
+# === HTML/CSS Files ===
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.less text eol=lf
+
+# === Configuration Files ===
+*.ini text eol=lf
+*.cfg text eol=lf
+*.conf text eol=lf
+*.env text eol=lf
+.env.* text eol=lf
+
+# === Docker/Container Files ===
+Dockerfile text eol=lf
+docker-compose*.yml text eol=lf
+Dockerfile.* text eol=lf
+
+# === Documentation ===
+README.md text eol=lf
+LICENSE text eol=lf
+CONTRIBUTING.md text eol=lf
+CHANGELOG.md text eol=lf
+*.md text eol=lf
+
+# === Security / Secrets ===
+# Всегда обрабатывайте как text (без diff)
+*.env text eol=lf
+*.key text eol=lf
+*.pem text eol=lf
+*.p12 text eol=lf
+*.secrets text eol=lf
+secrets/* text eol=lf
+
+# === Git Specific Files ===
+.gitattributes text eol=lf
+.gitignore text eol=lf
+.gitmodules text eol=lf
+
+# === LFS (Large File Storage) ===
+# Раскомментируйте если используете Git LFS
+# *.psd binary
+# *.ai binary
+# *.blend binary
+
+# === Binary Files ===
+# Файлы, которые Git должен обрабатывать как binary (без попыток diff)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.webp binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.7z binary
+*.bz2 binary
+*.xz binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.class binary
+*.jar binary
+*.war binary
+*.ear binary
+*.sqlite binary
+*.db binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.ttf binary
+*.otf binary
+*.bin binary
+*.dat binary
+
+# === Office Files ===
+*.docx binary
+*.xlsx binary
+*.pptx binary
+*.doc binary
+*.xls binary
+*.ppt binary
+*.odt binary
+
+# === Video Files ===
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.mkv binary
+*.webm binary
+*.flv binary
+*.wmv binary
+
+# === Audio Files ===
+*.mp3 binary
+*.wav binary
+*.flac binary
+*.ogg binary
+*.aac binary
+*.m4a binary
+*.wma binary
+
+# === Archives ===
+*.rar binary
+*.tar binary
+*.tgz binary
+*.gz binary
+*.bz2 binary
+*.zip binary
+*.7z binary
+*.xz binary
+*.lha binary
+*.iso binary
+*.dmg binary
+*.img binary
+*.apk binary
+*.ipa binary
+
+# === Font Files ===
+*.ttf binary
+*.otf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+
+# === Generated Files ===
+node_modules/** text eol=lf
+dist/** text eol=lf
+build/** text eol=lf
+.next/** text eol=lf
+out/** text eol=lf
+.cache/** text eol=lf
+*.min.js text eol=lf
+*.min.css text eol=lf
+*.map text eol=lf
+*.lock text eol=lf
+.env.local text eol=lf
+.env.*.local text eol=lf
+package-lock.json text eol=lf
+yarn.lock text eol=lf
+pnpm-lock.yaml text eol=lf
+
+# === Platform Specific ===
+# Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# macOS
+.DS_Store text eol=lf
+._*
+._* text eol=lf
+.AppleDouble text eol=lf
+
+# Linux
+* text eol=lf
+.*~ text eol=lf
+
+# === Project Specific ===
+# AIRules специфичные настройки
+templates/** text eol=lf
+cursor-rules/** text eol=lf
+claude-rules/** text eol=lf
+examples/** text eol=lf
+basics/** text eol=lf
