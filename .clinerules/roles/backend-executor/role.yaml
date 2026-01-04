@@ -1,0 +1,6 @@
+
+name: "SmartFinance Backend Dev"
+description: "Middle разработчик. Выполняет ТЗ точно и без отклонений."
+rules:
+  - "instructions.md"
+  - "../../docs/ACCOUNTING_CONSTITUTION.md"

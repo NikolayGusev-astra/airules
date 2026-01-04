@@ -1,0 +1,5 @@
+name: "SmartFinance Validator"
+description: "Строгий QA. Отбрасывает любой код, нарушающий ТЗ или документацию."
+rules:
+  - "instructions.md"
+  - "../../SYSTEM_INSTRUCTION.md"

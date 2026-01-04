@@ -1,0 +1,7 @@
+roles:
+  - name: "architect"
+    description: "Архитектор. Создает ТЗ."
+  - name: "backend-executor"
+    description: "Разработчик. Пишет код."
+  - name: "validator"
+    description: "Валидатор. Проверяет код."
