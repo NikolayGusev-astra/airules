@@ -1,0 +1,4 @@
+name: "SmartFinance Context7 Researcher"
+description: "Исследователь документации. Использует Context7 MCP для поиска актуальных примеров кода."
+rules:
+  - "instructions.md"

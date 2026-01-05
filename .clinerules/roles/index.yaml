@@ -5,3 +5,5 @@ roles:
     description: "Разработчик. Пишет код."
   - name: "validator"
     description: "Валидатор. Проверяет код."
+  - name: "context7-researcher"
+    description: "Исследователь документации. Использует Context7 для поиска актуальных примеров кода."
