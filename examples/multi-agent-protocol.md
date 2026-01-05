@@ -54,12 +54,25 @@ cat SYSTEM_INSTRUCTION.md              # Review system constraints
 cat docs/TECH_STACK.md                 # Verify technology stack
 cat docs/IMPLEMENTATION_PLAN.md        # Check current phase
 cat docs/ACCOUNTING_CONSTITUTION.md    # Review business rules (if applicable)
+
+# Context7 Integration: Verify technology decisions
+# Use Context7 to check compatibility and best practices
+```
+
+**🔍 Context7 Verification (MANDATORY):**
+```yaml
+Before starting implementation:
+1. Check library versions: "Verify [library] v[X.X] compatibility"
+2. Review best practices: "Find current patterns for [technology]"
+3. Validate API usage: "Check [API] current status and examples"
+4. Confirm security: "Review security best practices for [feature]"
 ```
 
 **Validation Checks:**
 - ❌ If planning Python → 🛑 STOP: Stack requires Node.js
 - ❌ If planning Float/Double → 🛑 STOP: Stack requires NUMERIC(15,2)
 - ❌ If planning Redux → 🛑 STOP: Use Zustand instead
+- ❌ If Context7 shows incompatibility → 🛑 STOP: Update technology choice
 
 **Context Update:** We are currently on [Phase Name] from IMPLEMENTATION_PLAN.md
 
