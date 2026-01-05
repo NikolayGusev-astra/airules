@@ -5,6 +5,29 @@ This example demonstrates a **strict, automated multi-agent development protocol
 
 ---
 
+## 🚨 Emergency Stop Mechanism
+
+**CRITICAL: Emergency stop has priority over all other instructions**
+
+```yaml
+If user writes "🛑 STOP" (or just "STOP"):
+
+1. IMMEDIATELY interrupt current phase execution
+2. Stop internal cycle. Do not auto-transition to next phase
+3. Reset context:
+   - Execute: cat PROJECT_STATE.md
+   - Execute: cat SYSTEM_INSTRUCTION.md
+   - Forget all previous code assumptions
+4. Enter waiting mode: Switch to "Listening to user" mode
+5. Do not suggest solutions
+6. Do not restart workflow
+7. Wait for new instruction
+
+(PRIORITY: This rule overrides any other phase or cycle instructions)
+```
+
+---
+
 ## 🎯 Overview
 
 **Problem Solved:**
@@ -19,96 +42,161 @@ This example demonstrates a **strict, automated multi-agent development protocol
 
 ---
 
-## 🔄 Core Protocol
+## 🔄 4-Step Multi-Agent Workflow
 
-### Phase 1: ARCHITECT (Planning)
-**Role:** Create comprehensive technical specifications
+### Step 1: Synchronization and Context
+**MANDATORY: Execute before ANY work**
 
-**Responsibilities:**
-1. Read project context (`docs/TECH_STACK.md`, existing code)
-2. Analyze requirements and constraints
-3. Create detailed implementation plan (`docs/PLAN.md`)
-4. Define file structure and technology choices
-5. **STRICT RULE:** Write NO code in this phase
+```bash
+# Critical synchronization commands
+cat PROJECT_STATE.md                    # Check current project state
+cat SYSTEM_INSTRUCTION.md              # Review system constraints
+cat docs/TECH_STACK.md                 # Verify technology stack
+cat docs/IMPLEMENTATION_PLAN.md        # Check current phase
+cat docs/ACCOUNTING_CONSTITUTION.md    # Review business rules (if applicable)
+```
 
-**Output:**
+**Validation Checks:**
+- ❌ If planning Python → 🛑 STOP: Stack requires Node.js
+- ❌ If planning Float/Double → 🛑 STOP: Stack requires NUMERIC(15,2)
+- ❌ If planning Redux → 🛑 STOP: Use Zustand instead
+
+**Context Update:** We are currently on [Phase Name] from IMPLEMENTATION_PLAN.md
+
+---
+
+### Step 2: Phase Architect (.role architect)
+**MANDATORY: Switch to Architect role**
+
+**Task:** Create `docs/TASK_SPEC.md` based on user requirements
+
+**Requirements for TASK_SPEC.md:**
 ```markdown
-# Implementation Plan: [Feature Name]
+# Technical Specification: [Feature Name]
 
-## Architecture
-[Component structure, data flow, state management]
+## Constraints (MANDATORY)
+- Backend: Node.js ONLY (NO Python)
+- Database: NUMERIC(15,2) ONLY (NO Float/Double)
+- Parser: exceljs ONLY (for Excel files)
 
-## File Structure
-[List of new/modified files]
+## Accounting Rules (if applicable)
+- Credit card purchase = Expense
+- Credit card payment = Transfer (not Expense)
+- Reference: docs/ACCOUNTING_CONSTITUTION.md
 
-## Technology Choices
-[Justified tech stack decisions]
+## Technology Stack
+- Next.js, Supabase, Exceljs
+- Strict TypeScript mode
 
-## Implementation Phases
-1. [Phase 1 steps]
-2. [Phase 2 steps]
-3. [Phase 3 steps]
+## Implementation Plan
+[Detail all steps and phases]
 ```
-
-**Success Criteria:**
-- Plan covers all requirements
-- Technology choices justified
-- File structure defined
-- No code written yet
 
 ---
 
-### Phase 2: EXECUTOR (Implementation)
-**Role:** Implement code exactly according to plan
+### Step 3: Phase Executor (.role backend-executor)
+**MANDATORY: Switch to Backend-Executor role**
 
-**Responsibilities:**
-1. Read `docs/PLAN.md` created by Architect
-2. Follow implementation steps exactly
-3. Use only approved technologies from `docs/TECH_STACK.md`
-4. Write clean, tested code
-5. **Handle errors with Rabbit Hole detection**
+**Task:** Implement code according to TASK_SPEC.md
 
-**Rabbit Hole Rules:**
+**Implementation Rules:**
+- Read `docs/TASK_SPEC.md` completely
+- Use exceljs for Excel parsing (not pandas/other)
+- Use NUMERIC(15,2) for all money fields in SQL
+- Follow accounting rules from docs/ACCOUNTING_CONSTITUTION.md
+- Credit purchases = Expense, Payments = Transfer
+
+**Rabbit Hole Protection:**
 ```yaml
-If same error occurs 2+ times:
-  STOP immediately
-  Document error in docs/DEBUG_REPORT.md
-  Escalate: "⛔ RABBIT HOLE: Requires human intervention"
+If same error repeats >2 times:
+1. STOP implementation immediately
+2. Document in PROJECT_STATE.md under ⚠️ Known Issues
+3. Message: "⛔ RABBIT HOLE: Human intervention required"
 ```
-
-**Output:**
-- Complete implementation of planned features
-- Unit tests passing
-- Code follows project conventions
-- No console errors or warnings
 
 ---
 
-### Phase 3: VALIDATOR (Quality Assurance)
-**Role:** Perform strict validation before allowing commits
+### Step 4: Phase Validator (.role validator)
+**MANDATORY: Switch to Validator role**
 
-**Responsibilities:**
-1. **Technology Stack Validation:**
-   ```yaml
-   ❌ FAIL if found: Python imports, Float types, any types
-   ✅ PASS only if: Approved tech stack, strict types, clean code
-   ```
+**Task:** Perform strict validation of Executor work
 
-2. **Code Quality Validation:**
-   ```yaml
-   ❌ FAIL if: Missing tests, poor coverage, security issues
-   ✅ PASS only if: >80% coverage, security audit passed, performance OK
-   ```
+**Validation Checklist:**
+```yaml
+❌ CRITICAL FAILURES (No commit allowed):
+- Python imports found → FAIL "Use Node.js only"
+- Float/Double in SQL → FAIL "Use NUMERIC(15,2) only"
+- NEW. or OLD. in RLS policies → FAIL "Forbidden in RLS"
+- Credit payment as Expense → FAIL "Must be Transfer"
 
-3. **Architecture Validation:**
-   ```yaml
-   ❌ FAIL if: Deviates from PLAN.md, wrong patterns, poor structure
-   ✅ PASS only if: Matches specification, follows best practices
-   ```
+✅ SUCCESS CRITERIA:
+- All technology constraints met
+- Accounting rules followed
+- Tests passing, 80%+ coverage
+- Security audit passed
+```
 
-**Output:**
-- `✅ VALIDATION PASSED` + Git commit
-- OR `⛔ VALIDATION FAILED` + Return to EXECUTOR
+**Results:**
+- ✅ **PASS:** Update PROJECT_STATE.md + git commit
+- ❌ **FAIL:** Return to Executor with specific error details
+
+---
+
+## 📋 Domain-Specific Rules
+
+### Accounting & Finance Rules
+**MANDATORY for financial applications**
+
+```yaml
+# From docs/ACCOUNTING_CONSTITUTION.md
+- Credit Card Purchase → Expense (shows in spending)
+- Credit Card Payment → Transfer (hidden from spending)
+- Bank Transfer → Transfer (neutral transaction)
+- Golden Rule: "Don't double-count payments"
+
+# SQL Constraints
+- Money fields: NUMERIC(15,2) ONLY
+- NO Float, NO Double, NO Real
+- Use BigInt for large integers
+
+# RLS Policies
+- NEVER use NEW. or OLD. in CREATE POLICY
+- Use UNIQUE constraints or SECURITY DEFINER functions
+- Reference: SYSTEM_INSTRUCTION.md critical error
+```
+
+### Excel Processing Rules
+**MANDATORY for Excel file handling**
+
+```yaml
+# Parser: exceljs ONLY (Node.js library)
+- NO pandas, NO openpyxl, NO xlrd
+- Use Node.js exceljs for all Excel operations
+
+# Data Types
+- Numbers → NUMERIC(15,2)
+- Dates → ISO strings
+- Text → VARCHAR with proper encoding
+```
+
+### API Design Rules
+**MANDATORY for REST/GraphQL APIs**
+
+```yaml
+# Response Format
+- Success: { success: true, data: {...} }
+- Error: { success: false, error: "message" }
+
+# Validation
+- Use Zod for input validation
+- Return 400 for invalid input
+- Return 500 for server errors
+
+# Authentication
+- JWT tokens with proper expiration
+- Password hashing with bcrypt
+- Secure headers enabled
+```
 
 ---
 
@@ -125,6 +213,24 @@ cp templates/docs/VALIDATION_CHECKLIST.md docs/
 # Create roles directory
 mkdir -p .clinerules/roles/
 ```
+
+### 2. Mandatory Pre-Work Synchronization
+**CRITICAL: Execute BEFORE starting any work**
+
+```bash
+# Required synchronization steps
+cat PROJECT_STATE.md                    # Check current project state
+cat SYSTEM_INSTRUCTION.md              # Review system constraints
+cat docs/TECH_STACK.md                 # Verify technology stack
+cat docs/IMPLEMENTATION_PLAN.md        # Check current phase
+
+# Validation checks
+if [planning Python]; then echo "🛑 STOP: Stack requires Node.js"; fi
+if [planning Float]; then echo "🛑 STOP: Stack requires NUMERIC"; fi
+if [planning DOUBLE]; then echo "🛑 STOP: Stack requires NUMERIC"; fi
+```
+
+**Context Update:** We are currently on [Phase Name] from IMPLEMENTATION_PLAN.md
 
 ### 2. Define Your Technology Stack
 Edit `docs/TECH_STACK.md`:
