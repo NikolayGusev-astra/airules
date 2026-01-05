@@ -82,131 +82,172 @@ examples/
 
 ## 🚀 Быстрый старт
 
+### ⚠️ ВАЖНО: MCP в ранней стадии развития
+
+**MCP экосистема еще активно развивается.** Многие серверы:
+- ❌ Не существуют в npm registry
+- ❌ Имеют проблемы совместимости
+- ❌ Требуют дополнительной настройки
+- ✅ **Работает:** `chrome-devtools-mcp` (протестировано)
+
 ### 1. Выберите вашу IDE
 ```bash
-# Для VS Code
+# Для VS Code + Cline (рекомендуется)
 cd mcp/setup/vscode/
 
-# Для Cursor
-cd mcp/setup/cursor/
-
-# Для Claude Desktop
-cd mcp/setup/claude/
+# Для других IDE
+cd mcp/setup/[cursor|claude]/
 ```
 
-### 2. Установите базовые MCP серверы
+### 2. Установите РАБОТАЮЩИЕ MCP серверы
 ```bash
-# Chrome DevTools (уже подключен в системе)
-npm install -g @modelcontextprotocol/chrome-devtools
+# ✅ Chrome DevTools (единственный стабильный)
+npm install -g chrome-devtools-mcp
 
-# GitHub integration
-npm install -g @modelcontextprotocol/github
-
-# Docker tools
-npm install -g @modelcontextprotocol/docker
+# ❌ Другие серверы пока недоступны:
+# @modelcontextprotocol/* - не существуют в npm
+# Требуют создания кастомных решений
 ```
 
-### 3. Настройте конфигурацию
-Скопируйте соответствующий конфигурационный файл в вашу IDE.
+### 3. Настройте минимальную конфигурацию
+Используйте только проверенные серверы:
 
-### 4. Протестируйте
-```bash
-# Проверьте подключение
-mcp-server --list
-
-# Запустите тестовый запрос
-mcp-client call chrome-devtools.take_screenshot
-```
-
----
-
-## 🎨 Категории MCP инструментов
-
-### 🌐 Web Development
-**Для frontend/backend разработки**
-- **Chrome DevTools** - браузерная автоматизация, тестирование UI
-- **HTML/CSS Generators** - генерация разметки и стилей
-- **JavaScript Runners** - выполнение и отладка кода
-- **Framework Helpers** - React/Vue/Angular инструменты
-- **API Clients** - REST/GraphQL тестирование
-
-### 🎨 Design & UI/UX
-**Для дизайна и пользовательского опыта**
-- **Figma Integration** - доступ к дизайн-файлам
-- **Color Tools** - генерация палитр, анализ контрастности
-- **Typography** - шрифты, типографика
-- **Icon Libraries** - поиск и интеграция иконок
-- **Design Systems** - генерация дизайн-систем
-
-### ⚙️ Backend & API
-**Для серверной разработки**
-- **Database Tools** - подключение к БД, выполнение запросов
-- **API Testing** - автоматическое тестирование endpoints
-- **Cloud Services** - AWS/GCP/Azure интеграция
-- **Authentication** - OAuth, JWT инструменты
-- **Microservices** - service mesh, orchestration
-
-### 🧪 Testing & QA
-**Для обеспечения качества**
-- **Unit Test Runners** - Jest, Vitest автоматизация
-- **E2E Testing** - Playwright, Cypress интеграция
-- **Performance** - Lighthouse, Web Vitals анализ
-- **Accessibility** - WCAG compliance checking
-- **Security Testing** - vulnerability scanning
-
-### 🏗️ DevOps & Infrastructure
-**Для развертывания и инфраструктуры**
-- **Docker** - контейнеризация, управление образами
-- **Kubernetes** - оркестрация, deployment
-- **CI/CD** - Jenkins, GitHub Actions интеграция
-- **Monitoring** - logs, metrics, alerting
-- **Infrastructure as Code** - Terraform, CloudFormation
-
-### 📊 Data Analytics
-**Для работы с данными**
-- **SQL Tools** - выполнение запросов, анализ схем
-- **Data Visualization** - графики, дашборды
-- **ETL Tools** - extract, transform, load
-- **ML/AI Tools** - модель deployment, inference
-- **Big Data** - Hadoop, Spark интеграция
-
-### 💼 Productivity
-**Для повышения продуктивности**
-- **Git** - version control operations
-- **Documentation** - генерация и обновление docs
-- **Project Management** - Jira, Trello интеграция
-- **Communication** - Slack, Teams bots
-- **Time Tracking** - автоматический учет времени
-
-### 🔒 Cybersecurity
-**Для безопасности**
-- **Vulnerability Scanners** - автоматический поиск уязвимостей
-- **Penetration Testing** - ethical hacking tools
-- **Compliance** - GDPR, HIPAA checking
-- **Encryption** - key management, secure communication
-- **Forensics** - incident analysis tools
-
----
-
-## 🔧 Настройка для разных IDE
-
-### Visual Studio Code + Cline
+**VS Code + Cline (.vscode/settings.json или глобальные настройки):**
 ```json
-// .vscode/settings.json
 {
   "cline.mcpServers": {
     "chrome-devtools": {
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"],
       "env": {
-        "CHROME_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        "CHROME_PATH": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
       }
-    },
-    "github": {
+    }
+  }
+}
+```
+
+### 4. Протестируйте
+```bash
+# Проверьте работу chrome-devtools
+npx chrome-devtools-mcp@latest --help
+
+# В Cline протестируйте:
+"Take a screenshot of current page"
+```
+
+---
+
+## 🎨 Категории MCP инструментов
+
+### ✅ РАБОТАЮЩИЕ MCP серверы
+
+#### 🌐 Web Development
+**Для frontend/backend разработки**
+- **✅ Chrome DevTools** - браузерная автоматизация, тестирование UI, скриншоты
+- **❌ HTML/CSS Generators** - генерация разметки (пока недоступно)
+- **❌ JavaScript Runners** - выполнение кода (пока недоступно)
+- **❌ Framework Helpers** - React/Vue инструменты (пока недоступно)
+- **❌ API Clients** - REST/GraphQL тестирование (пока недоступно)
+
+### 🎨 Design & UI/UX
+**Для дизайна и пользовательского опыта**
+- **❌ Figma Integration** - доступ к дизайн-файлам (пока недоступно)
+- **❌ Color Tools** - генерация палитр (пока недоступно)
+- **❌ Typography** - шрифты, типографика (пока недоступно)
+- **❌ Icon Libraries** - поиск иконок (пока недоступно)
+- **❌ Design Systems** - генерация систем (пока недоступно)
+
+### ⚙️ Backend & API
+**Для серверной разработки**
+- **❌ Database Tools** - подключение к БД (пока недоступно)
+- **❌ API Testing** - тестирование endpoints (пока недоступно)
+- **❌ Cloud Services** - AWS/GCP/Azure (пока недоступно)
+- **❌ Authentication** - OAuth, JWT (пока недоступно)
+- **❌ Microservices** - service mesh (пока недоступно)
+
+### 🧪 Testing & QA
+**Для обеспечения качества**
+- **✅ Chrome DevTools** - E2E тестирование через браузер
+- **❌ Unit Test Runners** - Jest, Vitest (пока недоступно)
+- **❌ E2E Testing** - Playwright, Cypress (пока недоступно)
+- **❌ Performance** - Lighthouse анализ (пока недоступно)
+- **❌ Accessibility** - WCAG checking (пока недоступно)
+
+### 🏗️ DevOps & Infrastructure
+**Для развертывания и инфраструктуры**
+- **❌ Docker** - контейнеризация (пока недоступно)
+- **❌ Kubernetes** - оркестрация (пока недоступно)
+- **❌ CI/CD** - Jenkins, GitHub Actions (пока недоступно)
+- **❌ Monitoring** - logs, metrics (пока недоступно)
+- **❌ Infrastructure as Code** - Terraform (пока недоступно)
+
+### 📊 Data Analytics
+**Для работы с данными**
+- **❌ SQL Tools** - выполнение запросов (пока недоступно)
+- **❌ Data Visualization** - графики (пока недоступно)
+- **❌ ETL Tools** - extract, transform (пока недоступно)
+- **❌ ML/AI Tools** - модель deployment (пока недоступно)
+- **❌ Big Data** - Hadoop, Spark (пока недоступно)
+
+### 💼 Productivity
+**Для повышения продуктивности**
+- **❌ Git** - version control (пока недоступно)
+- **❌ Documentation** - генерация docs (пока недоступно)
+- **❌ Project Management** - Jira, Trello (пока недоступно)
+- **❌ Communication** - Slack, Teams (пока недоступно)
+- **❌ Time Tracking** - учет времени (пока недоступно)
+
+### 🔒 Cybersecurity
+**Для безопасности**
+- **❌ Vulnerability Scanners** - поиск уязвимостей (пока недоступно)
+- **❌ Penetration Testing** - ethical hacking (пока недоступно)
+- **❌ Compliance** - GDPR, HIPAA (пока недоступно)
+- **❌ Encryption** - key management (пока недоступно)
+- **❌ Forensics** - incident analysis (пока недоступно)
+
+### 📋 Статус MCP экосистемы
+
+| Категория | Статус | Доступно | В разработке |
+|-----------|--------|----------|--------------|
+| **Web Testing** | ✅ Работает | Chrome DevTools | - |
+| **Design Tools** | ❌ Нет | - | Figma, Color Tools |
+| **Backend Tools** | ❌ Нет | - | Databases, APIs |
+| **DevOps** | ❌ Нет | - | Docker, K8s, CI/CD |
+| **Data Analytics** | ❌ Нет | - | SQL, ML, Big Data |
+| **Productivity** | ❌ Нет | - | Git, Docs, PM |
+| **Security** | ❌ Нет | - | Scanners, Compliance |
+
+---
+
+## 🔧 Настройка для разных IDE
+
+### ⚠️ РЕАЛЬНЫЕ конфигурации (только работающие серверы)
+
+### Visual Studio Code + Cline
+```json
+// Глобальные настройки: %APPDATA%\Code\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json
+{
+  "mcpServers": {
+    "chrome-devtools": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/github@latest"],
+      "args": ["-y", "chrome-devtools-mcp@latest"],
       "env": {
-        "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+        "CHROME_PATH": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+      },
+      "disabled": false
+    }
+  }
+}
+
+// Или в .vscode/settings.json проекта:
+{
+  "cline.mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"],
+      "env": {
+        "CHROME_PATH": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
       }
     }
   }
@@ -215,41 +256,29 @@ mcp-client call chrome-devtools.take_screenshot
 
 ### Cursor AI
 ```json
-// .cursorrules (или глобальная настройка)
-{
-  "mcp": {
-    "servers": {
-      "chrome-devtools": {
-        "command": "npx -y chrome-devtools-mcp@latest"
-      },
-      "filesystem": {
-        "command": "npx -y @modelcontextprotocol/filesystem@latest",
-        "args": ["--allowed-paths", "/workspace"]
-      }
-    }
-  }
-}
+// Пока не поддерживает MCP
+// Используйте built-in инструменты Cursor
 ```
 
 ### Claude Desktop
 ```json
-// ~/Library/Application Support/Claude/claude_desktop_config.json (macOS)
-// %APPDATA%/Claude/claude_desktop_config.json (Windows)
-{
-  "mcpServers": {
-    "chrome-devtools": {
-      "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"]
-    },
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/github@latest"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "your-token-here"
-      }
-    }
-  }
-}
+// Пока не поддерживает MCP
+// Используйте web-интерфейс Claude
+```
+
+### ✅ Тестирование MCP в Cline
+
+После настройки протестируйте:
+
+```bash
+# В Cline введите:
+"Take a screenshot of the current page"
+
+# Или:
+"Navigate to http://localhost:3000 and check if the page loads"
+
+# Ожидаемый результат:
+# MCP сервер откроет браузер и выполнит действие
 ```
 
 ---
