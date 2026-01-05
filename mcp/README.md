@@ -52,6 +52,9 @@ categories/
 ```
 setup/
 ├── vscode/                # Visual Studio Code конфигурации
+│   ├── settings.json      # MCP конфигурация
+│   ├── README.md          # Базовая настройка
+│   └── complete-designer-frontend-setup.md # ПОЛНЫЙ гайд для дизайна/верстки
 ├── cursor/                # Cursor AI настройки
 ├── claude/                # Claude Desktop интеграция
 └── cline/                 # Cline (VS Code extension)
