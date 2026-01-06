@@ -1,0 +1,11 @@
+name: "Ontologist"
+description: "Валидатор онтологической схемы для ролей, фаз, правил и артефактов. Проверяет соответствие ролей, артефактов и инструкций формальной онтологии (ontology-schema.md)."
+expertise:
+  - "Онтологическая схема AIRules (Agent, Phase, Artifact, Rule, Domain, Technology классы и отношения)"
+  - "Валидация онтологического соответствия в .clinerules/"
+  - "Правила и аксиомы из ontology-schema.md"
+phase: "Phase 1: Architect (Planning)"
+rules:
+  - "instructions.md"
+  - "constraints.md"
+  - "checklist.md"

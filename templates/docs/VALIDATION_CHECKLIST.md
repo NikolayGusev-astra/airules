@@ -1,336 +1,199 @@
-# ✅ Validation Checklist Template
-# Quality Assurance & Validation Gates
+# ✅ Чеклист качества для AIRules
 
-**Purpose:** Ensure code meets all quality standards before commit. **NO EXCEPTIONS ALLOWED.**
+## Обязательные проверки
 
----
+### 1. Стек технологий (TECH_STACK.md)
 
-## 🎯 Validation Overview
+- [ ] Явно определён стек технологий?
+  - ✅ Разрешённые технологии указаны
+  - ✅ Запрещённые технологии указаны
+  - ✅ Версии библиотек указаны
+- [ ] Стек соответствует проекту?
 
-**When to Use:** After every code implementation
-**Who Performs:** VALIDATOR phase (automated or manual)
-**Result:** ✅ PASS = Commit allowed | ❌ FAIL = Return to EXECUTOR
+### 2. Онтологическая схема (ontology-schema.md)
 
----
+- [ ] Ссылка на ontology-schema.md включена в README.md?
+- [ ] Онтологическая схема (Agent, Phase, Artifact, Rule, Domain, Technology) понятна?
+- [ ] Аксиомы (Agent executes Phase, Agent follows Rule, Phase produces Artifact, Domain requires Technology) понятны?
+- [ ] Классы и отношения правильно определены?
 
-## 🔧 Technology Stack Compliance
+### 3. Ролевая конфигурация (.clinerules/roles/[role-name]/role.yaml)
 
-### Language & Framework
-- [ ] **TypeScript strict mode** enabled (no JavaScript)
-- [ ] **Approved frameworks only** (matches TECH_STACK.md)
-- [ ] **Version constraints** followed
-- [ ] **No forbidden technologies** used
-- [ ] **Platform compatibility** maintained
+- [ ] Роль имеет обязательное поле `subclass`?
+- [ ] Подкласс соответствует (Architect, Executor, Validator, Specialist)?
+- [ ] Описание ответственности (`description`) непустое?
+- [ ] Экспертиза (`expertise`) содержит хотя бы один элемент?
+- [ ] Файлы правил (`rules`) указаны?
+  - ✅ instructions.md
+  - ✅ constraints.md
+  - ✅ checklist.md
 
-### Dependencies & Libraries
-- [ ] **Only approved packages** from TECH_STACK.md
-- [ ] **No deprecated libraries** (checked via npm audit)
-- [ ] **License compatibility** verified
-- [ ] **Bundle size** within limits (<500kb gzip)
-- [ ] **No circular dependencies**
+### 4. Онтологическое соответствие ролей и фаз
 
----
+- [ ] Роль выполняет только разрешённую фазу?
+  - ✅ Architect → Phase 1 (Architect) только
+  - ✅ Executor → Phase 2 (Executor) только
+  - ✅ Validator → Phase 3 (Validator) только
+- [ ] Роль создаёт только разрешённый артефакт?
+  - ✅ Architect → PLAN.md (только план, без кода)
+  - ✅ Executor → source_code (реализация, без документации)
+  - ✅ Validator → VALIDATION_REPORT.md (проверка, без изменений)
 
-## 🛡️ Code Quality Standards
+### 5. Технологическое соответствие (Technology классы)
 
-### TypeScript/Type Safety
-- [ ] **Zero any types** (explicit types only)
-- [ ] **No implicit any** parameters
-- [ ] **Strict null checks** enabled
-- [ ] **Interface segregation** (small, focused interfaces)
-- [ ] **Generic constraints** properly defined
+- [ ] Технологии соответствуют онтологическому списку Technology?
+  - ✅ Все используемые технологии определены в ontology-schema.md
+  - ✅ Нет запрещённых технологий
+  - ✅ Домен Accounting использует NUMERIC (не Float)
+  - ✅ Домен Technology использует только TypeScript, JavaScript, Node.js
 
-### Code Structure & Organization
-- [ ] **Single Responsibility Principle** followed
-- [ ] **Functions < 50 lines** each
-- [ ] **Files < 300 lines** each
-- [ ] **Proper imports/exports** (no wildcard imports)
-- [ ] **Consistent naming** conventions
+### 6. Правила (Rule классы)
 
-### Error Handling
-- [ ] **Try-catch blocks** around async operations
-- [ ] **Proper error types** (not generic Error)
-- [ ] **Error messages** user-friendly and informative
-- [ ] **Graceful degradation** implemented
-- [ ] **Logging** for debugging purposes
+- [ ] Правила соответствуют онтологическим классам Rule?
+  - ✅ Technical правила для технических ограничений
+  - ✅ Business правила для бизнес-логики
+  - ✅ Quality правила для качества кода
+  - ✅ Security правила для безопасности
 
----
+### 7. Аксиоматическое соответствие (Ontology Axioms)
 
-## 🧪 Testing Requirements
+- [ ] Соблюдается аксиома "Agent executes Phase"?
+  - ✅ Роль выполняет только свою фазу
+- [ ] Соблюдается аксиома "Phase produces Artifact"?
+  - ✅ Каждая фаза создаёт правильный артефакт
+- [ ] Соблюдается аксиома "Agent follows Rule"?
+  - ✅ Роль следует правилам
+- [ ] Соблюдается аксиома "Domain requires Technology"?
+  - ✅ Доменная область использует только разрешённые технологии
 
-### Unit Tests
-- [ ] **All public functions** have unit tests
-- [ ] **Edge cases** covered (null, undefined, empty arrays)
-- [ ] **Error conditions** tested
-- [ ] **Mocking** used appropriately
-- [ ] **Test isolation** maintained
+### 8. Контекст и артефакты
 
-### Integration Tests
-- [ ] **API endpoints** tested end-to-end
-- [ ] **Database operations** verified
-- [ ] **External service** integrations tested
-- [ ] **Authentication flows** validated
+- [ ] План разработки (PLAN.md) используется?
+  - ✅ Architect создаёт PLAN.md
+  - ✅ Executor следует плану
+  - ✅ Validator проверяет соответствие плану
+- [ ] План актуален (нет устарших требований)?
+- [ ] Технологический стек соответствует плану?
 
-### Test Quality
-- [ ] **Test coverage >80%** overall
-- [ ] **No flakey tests** (consistent results)
-- [ ] **Descriptive test names** (not "test1", "test2")
-- [ ] **Arrange-Act-Assert** pattern followed
-- [ ] **No business logic** in tests
+### 9. Код и имплементация
 
----
+- [ ] Код следует архитектурному плану?
+  - ✅ Структура файлов соответствует PLAN.md
+  - ✅ Все API endpoints реализованы
+- [ ] Нет отклонений от стека (например, Python в Node.js проекте)
+- [ ] Код соответствует типовым стандартам (TS strict mode)?
 
-## 🔒 Security Validation
+### 10. Тесты и валидация
 
-### Input Validation
-- [ ] **All user inputs** validated with Zod/schema
-- [ ] **SQL injection** prevention (prepared statements)
-- [ ] **XSS protection** (sanitization)
-- [ ] **CSRF protection** implemented
-- [ ] **Rate limiting** applied to APIs
+- [ ] Тесты написаны до реализации (TDD)?
+  - ✅ Тесты создаются перед кодом
+  - ✅ Тесты покрывают критические функции
+- [ ] Валидация выполнена после кода?
+  - ✅ VALIDATOR проверяет качество и соответствие
 
-### Authentication & Authorization
-- [ ] **JWT tokens** properly validated
-- [ ] **Password hashing** with bcrypt/argon2
-- [ ] **Session management** secure
-- [ ] **Role-based access** control implemented
-- [ ] **Secure headers** configured
+### 11. Документация
 
-### Data Protection
-- [ ] **No hardcoded secrets** in code
-- [ ] **Environment variables** used for config
-- [ ] **Sensitive data** encrypted at rest
-- [ ] **HTTPS only** in production
-- [ ] **CORS** properly configured
+- [ ] Инструкции роли понятны?
+  - ✅ instructions.md чёткие и конкретные
+- [ ] Ограничения (constraints.md) явно указаны
+  - ✅ Чеклист (checklist.md) включает все критерии
 
----
+### 12. Безопасность
 
-## 🏗️ Architecture Compliance
+- [ ] Нет небезопасных паттернов?
+  - ✅ Отсутствует SQL инъекции
+  - ✅ Типы данных проверяются (NUMERIC для денег)
+  - ✅ Нет утечки чувствительных данных
+  - ✅ Правила доступа (RLS) соблюдены
 
-### Plan Adherence
-- [ ] **File structure** matches PLAN.md
-- [ ] **Component hierarchy** follows specification
-- [ ] **API contracts** implemented as designed
-- [ ] **Database schema** matches plan
-- [ ] **No scope creep** (only planned features)
+### 13. Оптимизация и производительность
 
-### Design Patterns
-- [ ] **SOLID principles** followed
-- [ ] **DRY principle** maintained (no duplication)
-- [ ] **Appropriate patterns** used (Observer, Strategy, etc.)
-- [ ] **Separation of concerns** clear
-- [ ] **Dependency injection** where appropriate
-
-### Performance
-- [ ] **No memory leaks** (useEffect cleanup)
-- [ ] **Lazy loading** for heavy components
-- [ ] **Memoization** for expensive operations
-- [ ] **Optimistic updates** for better UX
-- [ ] **Code splitting** implemented
+- [ ] Код оптимизирован?
+  - ✅ Нет избыточных запросов к БД
+  - ✅ Используются индексы там, где нужно
+  - ✅ Пагинация реализована корректно
+  - ✅ Нет утечек памяти
 
 ---
 
-## 🎨 Code Style & Conventions
+## 🎯 Онтологическая валидация (NEW)
 
-### Formatting & Linting
-- [ ] **ESLint** passes with zero errors
-- [ ] **Prettier** formatting applied
-- [ ] **Consistent indentation** (2 spaces)
-- [ ] **Semicolons** used consistently
-- [ ] **Trailing commas** in multi-line structures
+### 14. Онтологическое соответствие ролей
 
-### Documentation
-- [ ] **Complex functions** have JSDoc comments
-- [ ] **Public APIs** documented
-- [ ] **README.md** updated if needed
-- [ ] **Inline comments** for business logic
-- [ ] **TODO comments** removed or addressed
+- [ ] Роль соответствует онтологическому подклассу Agent?
+  - ✅ subclass указан и соответствует (Architect, Executor, Validator, Specialist)
+  - ✅ Роль не смешивает фазы (Architect не пишет код)
 
-### Git & Version Control
-- [ ] **Commit message** follows conventional format
-- [ ] **No large files** committed (>10MB)
-- [ ] **Sensitive files** in .gitignore
-- [ ] **Branch naming** convention followed
-- [ ] **Merge conflicts** resolved properly
+- [ ] Роль следует онтологическим аксиомам?
+  - ✅ Соблюдается "Agent executes Phase"
+  - ✅ Соблюдается "Agent follows Rule"
+  - ✅ Соблюдается "Phase produces Artifact"
 
----
+### 15. Онтологическое соответствие фаз
 
-## 🚀 Deployment Readiness
+- [ ] Фаза соответствует онтологическому классу Phase?
+  - ✅ Phase 1, Phase 2 или Phase 3
+  - ✅ Фаза создаёт только разрешённый артефакт
+  - ✅ Phase 1 → PLAN.md
+  - ✅ Phase 2 → source_code
+  - ✅ Phase 3 → VALIDATION_REPORT.md
 
-### Build & Packaging
-- [ ] **Build succeeds** without errors
-- [ ] **Type checking** passes
-- [ ] **Bundle analysis** reviewed
-- [ ] **Source maps** generated for debugging
-- [ ] **Environment-specific** builds work
+### 16. Онтологическое соответствие артефактов
 
-### Runtime Validation
-- [ ] **No console errors** in production
-- [ ] **Loading states** handled properly
-- [ ] **Error boundaries** implemented
-- [ ] **Fallback UI** for failures
-- [ ] **Progressive enhancement** where applicable
+- [ ] Артефакт соответствует онтологическому классу Artifact?
+  - ✅ PLAN.md (Архитектурный план)
+  - ✅ source_code (Исходный код)
+  - ✅ DEBUG_REPORT.md (Отчёт об ошибках)
+  - ✅ ONTOLOGY_VIOLATION_REPORT.md (Отчёт об онтологических нарушениях)
 
----
+### 17. Онтологическое соответствие правил
 
-## 📊 Performance Metrics
+- [ ] Правило соответствует онтологическому классу Rule?
+  - ✅ Technical, Business, Quality или Security
+  - ✅ Правило ограничивает или разрещает технологии
+  - ✅ Правило применимо к роли (subclass)
 
-### Core Web Vitals (Frontend)
-- [ ] **LCP < 2.5s** (Largest Contentful Paint)
-- [ ] **FID < 100ms** (First Input Delay)
-- [ ] **CLS < 0.1** (Cumulative Layout Shift)
-- [ ] **TTFB < 800ms** (Time to First Byte)
-- [ ] **Bundle size** monitored
+### 18. Онтологическое соответствие технологий (Technology классы)
 
-### Backend Performance
-- [ ] **Response time < 500ms** for APIs
-- [ ] **Database queries** optimized
-- [ ] **Caching** implemented where appropriate
-- [ ] **Connection pooling** configured
-- [ ] **Memory usage** within limits
+- [ ] Технология определена в ontology-schema.md?
+  - ✅ Технология соответствует одному из: Next.js, React, Node.js, PostgreSQL, Supabase, TypeScript, Decimal.js, Exceljs
+  - ✅ Технология имеет версию в SemVer формате
+  - ✅ Технология относится к правильному домену (Accounting или Technology)
 
----
+### 19. Онтологическое соответствие доменов (Domain классы)
 
-## 🔍 Accessibility (WCAG 2.1 AA)
+- [ ] Доменная область определена в ontology-schema.md?
+  - ✅ Accounting (Финансы, NUMERIC типы, Decimal.js)
+  - ✅ Technology (Технологический стек, инструменты)
 
-### Keyboard Navigation
-- [ ] **All interactive elements** keyboard accessible
-- [ ] **Focus indicators** visible and obvious
-- [ ] **Tab order** logical and intuitive
-- [ ] **Keyboard shortcuts** documented
-- [ ] **No keyboard traps**
+### 20. Аксиоматические отношения
 
-### Screen Reader Support
-- [ ] **ARIA labels** on all controls
-- [ ] **Semantic HTML** used properly
-- [ ] **Alt text** on all images
-- [ ] **Heading hierarchy** correct (h1→h2→h3)
-- [ ] **Live regions** for dynamic content
+- [ ] Соблюдаются все онтологические аксиомы?
+  - ✅ Agent executes Phase → Agent.subclass
+  - ✅ Agent follows Rule → Rule.class
+  - ✅ Phase produces Artifact → Artifact.class
+  - ✅ Domain requires Technology → Technology.class
 
-### Visual Accessibility
-- [ ] **Color contrast** ratio >4.5:1
-- [ ] **Text size** adjustable (no fixed px)
-- [ ] **Focus states** clearly visible
-- [ ] **Error states** clearly communicated
-- [ ] **Loading states** indicated
+### 21. Онтологический Rabbit Hole Detection
+
+- [ ] Онтологическое нарушение обнаружено?
+  - ✅ Нарушение онтологического правила задокументировано
+  - ✅ Создан ONTOLOGY_VIOLATION_REPORT.md
+  - ✅ Процесс остановлен до эскалации человеку
 
 ---
 
-## 🌐 Browser & Device Compatibility
+## 📋 Примечания для валидатора
 
-### Browser Support
-- [ ] **Chrome 90+** tested
-- [ ] **Firefox 88+** tested
-- [ ] **Safari 14+** tested
-- [ ] **Edge 90+** tested
-- [ ] **Mobile browsers** tested
+### Для сложных проектов:
+- ✅ Добавьте проверки специфичных для вашего домена
+- ✅ Используйте Ontologist для строгой онтологической валидации
+- ✅ Интегрируйте онтологическую валидацию в CI/CD
 
-### Device Support
-- [ ] **Responsive design** verified
-- [ ] **Touch targets** minimum 44px
-- [ ] **Mobile performance** acceptable
-- [ ] **Tablet layouts** tested
-- [ ] **Desktop layouts** tested
+### Для простых проектов:
+- ✅ Упростите проверки, следуя онтологическим принципам
+- ✅ Фокус на качестве и соответствии стека
 
 ---
 
-## 📋 Validation Results
-
-### Overall Assessment
-- [ ] **ALL CHECKLISTS PASSED**
-- [ ] **ZERO CRITICAL ISSUES**
-- [ ] **READY FOR COMMIT**
-
-### Summary
-```
-✅ Technology Stack: [X/Y passed]
-✅ Code Quality: [X/Y passed]
-✅ Testing: [X/Y passed]
-✅ Security: [X/Y passed]
-✅ Architecture: [X/Y passed]
-✅ Performance: [X/Y passed]
-✅ Accessibility: [X/Y passed]
-```
-
-### Issues Found (if any)
-- **Critical:** [List blocking issues]
-- **Major:** [List important fixes needed]
-- **Minor:** [List nice-to-have improvements]
-
-### Approval
-- **Validated By:** [VALIDATOR phase]
-- **Date:** [YYYY-MM-DD]
-- **Approval:** ✅ APPROVED FOR COMMIT | ❌ REQUIRES FIXES
-
----
-
-## 🚨 Failure Handling
-
-### If Validation Fails
-1. **STOP** - Do not commit
-2. **Document** failures in this checklist
-3. **Return to EXECUTOR** with specific error details
-4. **Allow one retry** attempt
-5. **Escalate to human** if retry fails
-
-### Critical Failures (No Commit Allowed)
-- ❌ Security vulnerabilities
-- ❌ Data loss potential
-- ❌ Breaking API changes
-- ❌ Performance degradation >50%
-- ❌ Accessibility violations (WCAG AA)
-
-### Non-Critical Issues
-- ⚠️ Code style violations
-- ⚠️ Missing documentation
-- ⚠️ Minor performance optimizations
-- ⚠️ Test coverage <90%
-
----
-
-## 📈 Continuous Improvement
-
-### Metrics to Track
-- **Validation pass rate** (target: >90%)
-- **Time to validation** (target: <10 min)
-- **Common failure patterns**
-- **Improvement opportunities**
-
-### Regular Reviews
-- **Weekly:** Review validation failures
-- **Monthly:** Audit checklist completeness
-- **Quarterly:** Update standards based on industry changes
-
----
-
-## 🆘 Emergency Bypass (Rare Cases Only)
-
-**Conditions for bypass:**
-- 🚨 **Critical production issue** requiring immediate fix
-- 🚨 **Security vulnerability** needing urgent patch
-- 🚨 **Data integrity** threat
-
-**Bypass Process:**
-1. Document bypass reason in commit message
-2. Create follow-up task for proper validation
-3. Notify team lead for oversight
-4. Address validation issues within 24 hours
-
-**Format:**
-```
-🚨 EMERGENCY BYPASS: [Reason]
-TODO: Complete validation checklist #123
-```
-
----
-
-## 📚 Related Documentation
-
-- `docs/TECH_STACK.md` - Technology constraints
-- `docs/PLAN.md` - Implementation specification
-- `examples/multi-agent-protocol.md` - Protocol overview
-- `AI_BEST_PRACTICES.md` - Development guidelines
-
----
-
-**Remember: Strict validation ensures quality. No shortcuts allowed.** ✅
+**Следуй этому чеклисту строго для обеспечения качества AIRules!** 🚀

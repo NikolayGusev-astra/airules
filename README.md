@@ -913,6 +913,7 @@ cp examples/react-expert.md my-role.md
 
 ## 📚 Дополнительные материалы
 
+- [docs/AIRULES_REFERENCE_PROMPT.md](docs/AIRULES_REFERENCE_PROMPT.md) — **Справочный ассистент для работы с документацией AIRules** (4 режима: Справочник, Управление документацией, Интерактивное обучение, Интегрированная поддержка)
 - [AI_BEST_PRACTICES.md](AI_BEST_PRACTICES.md) — Best Practices для работы с LLM-инструментами
 - [basics/role-based-development.md](basics/role-based-development.md) — Глубокое погружение в ролевую разработку
 - [basics/pattern-library.md](basics/pattern-library.md) — Библиотека паттернов
