@@ -7,3 +7,7 @@ roles:
     description: "Валидатор. Проверяет код."
   - name: "context7-researcher"
     description: "Исследователь документации. Использует Context7 для поиска актуальных примеров кода."
+  - name: "ontologist-syncer"
+    description: "Специалист по онтологической синхронизации. Управляет Memory Graph и анализом зависимостей для Accounting домена."
+  - name: "accounting-expert"
+    description: "Специалист по финансовому учёту. Проверяет соответствие Accounting Constitution и финансовым правилам."
