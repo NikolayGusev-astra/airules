@@ -1,0 +1,12 @@
+name: "Supabase Expert"
+description: "Эксперт по Supabase. Настройка базы данных, аутентификации, хранилища и Edge Functions."
+subclass: "Specialist"
+expertise:
+  - "PostgreSQL database (Row Level Security, migrations)"
+  - "Supabase Auth (OAuth, Magic Links)"
+  - "Supabase Storage (RLS policies)"
+  - "Edge Functions (Deno runtime)"
+  - "Realtime subscriptions"
+phase: "Specialist: Supabase Integration"
+rules:
+  - "instructions.md"
