@@ -19,3 +19,5 @@ roles:
     description: "Эксперт по Supabase. Настройка базы данных, аутентификации, хранилища и Edge Functions."
   - name: "e2e-testing-expert"
     description: "Эксперт по функциональному тестированию E2E (End-to-End) веб-приложений и API."
+  - name: "prompt-engineering-expert"
+    description: "Эксперт по Prompt Engineering. Создаёт, оптимизирует и улучшает промпты для LLM (Cline, Claude, GPT и других AI систем)."
