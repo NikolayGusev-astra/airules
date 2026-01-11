@@ -1,0 +1,69 @@
+skills:
+  - name: "architect"
+    description: "Архитектор. Создает Технические Задания (ТЗ) на основе документации, но НЕ пишет код."
+    phase: "Architect"
+    category: "Development"
+    
+  - name: "backend-executor"
+    description: "Бэкенд-разработчик. Выполняет ТЗ точно и без отклонений. Пишет код на TypeScript/Node.js."
+    phase: "Executor"
+    category: "Development"
+    
+  - name: "validator"
+    description: "Строгий QA. Отбрасывает любой код, нарушающий ТЗ или документацию."
+    phase: "Validator"
+    category: "Development"
+    
+  - name: "ontologist"
+    description: "Валидатор онтологической схемы для ролей, фаз, правил и артефактов. Проверяет соответствие формальной онтологии."
+    phase: "Specialist"
+    category: "Quality"
+    
+  - name: "ontologist-syncer"
+    description: "Специалист по онтологической синхронизации. Управляет Memory Graph и анализом зависимостей для Accounting домена."
+    phase: "Specialist"
+    category: "Quality"
+    
+  - name: "context7-researcher"
+    description: "Исследователь документации. Использует Context7 для поиска актуальных примеров кода и документации."
+    phase: "Specialist"
+    category: "Research"
+    
+  - name: "rag-expert"
+    description: "Expert in Retrieval-Augmented Generation (RAG). Специализируется на поиске и синтезе информации из документации."
+    phase: "Specialist"
+    category: "Research"
+    docs:
+      - "docs/known-issues.md"
+      - "docs/solutions.md"
+      - "docs/advanced.md"
+    scripts:
+      - "scripts/init.sh"
+      - "scripts/validate.sh"
+    
+  - name: "vercel-expert"
+    description: "Эксперт по Vercel. Деплой, настройка CI/CD и управление проектами на платформе Vercel."
+    phase: "Specialist"
+    category: "Deployment"
+    
+  - name: "netlify-expert"
+    description: "Эксперт по Netlify. Деплой, настройка CI/CD и управление статическими сайтами и серверными функциями."
+    phase: "Specialist"
+    category: "Deployment"
+    
+  - name: "supabase-expert"
+    description: "Эксперт по Supabase. Настройка базы данных, аутентификации, хранилища и Edge Functions."
+    phase: "Specialist"
+    category: "Infrastructure"
+    
+  - name: "e2e-testing-expert"
+    description: "Эксперт по функциональному тестированию E2E (End-to-End) веб-приложений и API."
+    phase: "Specialist"
+    category: "Testing"
+    docs:
+      - "docs/known-issues.md"
+      - "docs/solutions.md"
+      - "docs/advanced.md"
+    scripts:
+      - "scripts/init.sh"
+      - "scripts/validate.sh"
