@@ -151,6 +151,35 @@ await use_mcp_tool("query-docs", {
 });
 ```
 
+### 21st Magic
+
+Architect использует 21st Magic для:
+- Генерации прототипов UI компонентов
+- Создания логотипов и иконок
+- Визуализации архитектурных решений
+- Быстрого создания wireframes
+
+**Пример использования:**
+```javascript
+// Сгенерировать UI компонент для плана
+await use_mcp_tool("21st_magic_component_builder", {
+  message: "Create a login form component with email and password fields",
+  searchQuery: "login form react component"
+});
+
+// Создать логотип для нового проекта
+await use_mcp_tool("logo_search", {
+  queries: ["finance", "accounting"],
+  format: "TSX"
+});
+
+// Получить вдохновение для UI
+await use_mcp_tool("21st_magic_component_inspiration", {
+  message: "Show examples of modern dashboard layouts",
+  searchQuery: "dashboard ui components"
+});
+```
+
 ## Лучшие практики
 
 ### 1. Правила планирования

@@ -67,3 +67,17 @@ skills:
     scripts:
       - "scripts/init.sh"
       - "scripts/validate.sh"
+      
+  - name: "librarian"
+    description: "Библиотекарь. Проверяет и упорядочивает документацию согласно лучшим практикам Diátaxis и Docs-as-Code."
+    phase: "Specialist"
+    category: "Quality"
+    docs:
+      - "docs/known-issues.md"
+      - "docs/solutions.md"
+      - "docs/advanced.md"
+    scripts:
+      - "scripts/validate-librarian.sh"
+      - "scripts/order-docs.sh"
+      - "scripts/fix-style.sh"
+      - "scripts/audit-links.sh"

@@ -714,6 +714,68 @@ expect(response.status()).toBe(200);
 
 ---
 
+## 🔗 Интеграция с MCP
+
+### Playwright
+
+E2E Testing Expert использует Playwright MCP для:
+- Автоматизации браузерного тестирования
+- Создания скриншотов и видео при падении тестов
+- Анализа сетевых запросов
+- Тестирования responsive design
+
+**Пример использования:**
+```javascript
+// Автоматическое тестирование UI компонентов
+await use_mcp_tool("playwright_navigate", {
+  url: "http://localhost:3000"
+});
+
+await use_mcp_tool("playwright_fill", {
+  selector: "input[name='email']",
+  value: "test@example.com"
+});
+
+await use_mcp_tool("playwright_click", {
+  selector: "button[type='submit']"
+});
+
+// Захват скриншота при ошибке
+await use_mcp_tool("playwright_screenshot", {
+  name: "login-error",
+  fullPage: true
+});
+
+// Анализ производительности
+await use_mcp_tool("playwright_evaluate", {
+  script: "window.performance.now()"
+});
+```
+
+### Chrome DevTools
+
+Для глубокого анализа производительности и отладки:
+```javascript
+// Запуск трассировки производительности
+await use_mcp_tool("chrome-devtools", "performance_start_trace", {
+  reload: true,
+  autoStop: true
+});
+
+// Анализ сетевых запросов
+await use_mcp_tool("chrome-devtools", "list_network_requests", {
+  types: ["xhr", "fetch"]
+});
+
+// Проверка responsive design
+await use_mcp_tool("chrome-devtools", "resize_page", {
+  width: 375,
+  height: 667
+});
+```
+
+---
+
 ## 📚 Ресурсы
 
 ### Официальная документация

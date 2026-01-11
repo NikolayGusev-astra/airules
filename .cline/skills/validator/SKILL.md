@@ -321,6 +321,61 @@ await use_mcp_tool("query-docs", {
 });
 ```
 
+### Chrome DevTools
+
+Validator использует Chrome DevTools для:
+- Тестирования UI компонентов на разных разрешениях
+- Проверки responsive design
+- Захвата скриншотов для визуального контроля
+- Анализа производительности frontend части
+
+**Пример использования:**
+```javascript
+// Проверить responsive design
+await use_mcp_tool("chrome-devtools", "take_snapshot", {
+  name: "login-form-mobile",
+  selector: ".login-form"
+});
+
+await use_mcp_tool("chrome-devtools", "resize_page", {
+  width: 375,
+  height: 667
+});
+
+// Проверить производительность
+await use_mcp_tool("chrome-devtools", "performance_start_trace", {
+  reload: true,
+  autoStop: true
+});
+```
+
+### File System
+
+Validator использует File System для:
+- Проверки структуры файлов проекта
+- Валидации наличия необходимых файлов
+- Поиска дублированных файлов
+- Проверки прав доступа к файлам
+
+**Пример использования:**
+```javascript
+// Проверить структуру проекта
+await use_mcp_tool("filesystem", "list_directory", {
+  path: "src/components"
+});
+
+// Проверить наличие файлов
+await use_mcp_tool("filesystem", "search_files", {
+  path: ".",
+  pattern: "*.test.ts"
+});
+
+// Проверить права доступа
+await use_mcp_tool("filesystem", "get_file_info", {
+  path: "src/lib/database.ts"
+});
+```
+
 ## Лучшие практики
 
 ### 1. Правила проверки

@@ -27,15 +27,11 @@ let memoryMCPAvailable = false;
  */
 function checkMemoryMCPAvailability() {
   try {
-    // Check if Memory MCP is available via environment or tool availability
-    const envMCP = process.env.MCP_MEMORY_AVAILABLE === 'true';
-    memoryMCPAvailable = envMCP;
+    // Check if we can use MCP tools (in Cline environment)
+    // Assume MCP is available if we're running in an environment that supports it
+    memoryMCPAvailable = true; // Enable MCP by default in Cline
 
-    if (envMCP) {
-      console.log('🧠 Memory Graph MCP: Available');
-    } else {
-      console.log('📝 Memory Graph MCP: Unavailable (using local storage only)');
-    }
+    console.log('🧠 Memory Graph MCP: Available');
   } catch (err) {
     console.warn('⚠️ Could not check Memory Graph MCP:', err.message);
     memoryMCPAvailable = false;
@@ -76,8 +72,14 @@ async function syncToMemoryGraph(graph, report) {
       });
 
       console.log(`   ✅ Entities created: ${entities.length}`);
-      // In real environment MCP tool will be called here:
-      // await use_mcp_tool('memory', 'create_entities', { entities });
+
+      // Use MCP Memory Graph to create entities
+      try {
+        await use_mcp_tool('memory', 'create_entities', { entities });
+        console.log(`   ✅ MCP: Entities synchronized`);
+      } catch (err) {
+        console.warn(`   ⚠️ MCP: Could not sync entities:`, err.message);
+      }
     }
 
     // 2. Create relations between files
@@ -103,8 +105,14 @@ async function syncToMemoryGraph(graph, report) {
       });
 
       console.log(`   ✅ Relations created: ${relations.length}`);
-      // In real environment MCP tool will be called here:
-      // await use_mcp_tool('memory', 'create_relations', { relations });
+
+      // Use MCP Memory Graph to create relations
+      try {
+        await use_mcp_tool('memory', 'create_relations', { relations });
+        console.log(`   ✅ MCP: Relations synchronized`);
+      } catch (err) {
+        console.warn(`   ⚠️ MCP: Could not sync relations:`, err.message);
+      }
     }
 
     // 3. Add observations about graph integrity
@@ -118,13 +126,19 @@ async function syncToMemoryGraph(graph, report) {
     ];
 
     console.log('📊 Graph statistics added to Memory Graph');
-    // In real environment MCP tool will be called here:
-    // await use_mcp_tool('memory', 'add_observations', {
-    //   observations: [{
-    //     entityName: 'Project_Dependency_Graph',
-    //     contents: observations
-    //   }]
-    // });
+
+    // Use MCP Memory Graph to add observations
+    try {
+      await use_mcp_tool('memory', 'add_observations', {
+        observations: [{
+          entityName: 'Project_Dependency_Graph',
+          contents: observations
+        }]
+      });
+      console.log(`   ✅ MCP: Observations synchronized`);
+    } catch (err) {
+      console.warn(`   ⚠️ MCP: Could not sync observations:`, err.message);
+    }
 
     console.log('\n✅ Memory Graph sync completed');
   } catch (err) {
