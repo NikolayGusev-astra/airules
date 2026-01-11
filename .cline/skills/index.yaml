@@ -81,3 +81,18 @@ skills:
       - "scripts/order-docs.sh"
       - "scripts/fix-style.sh"
       - "scripts/audit-links.sh"
+    
+  - name: "LLM-openai"
+    description: "LLM с публичными API (OpenAI, Anthropic). Работает без проприетарных SDK. Для чат-ботов, ассистентов и генерации текста."
+    phase: "Specialist"
+    category: "AI & Media"
+    
+  - name: "LLM-web"
+    description: "LLM через browser automation (Playwright, Chrome DevTools). НЕ требует API ключей. Работает с chat.z.ai и другими web-LLM сервисами. Ключевое слово: Заюшь 🐰"
+    phase: "Specialist"
+    category: "AI & Media"
+    docs:
+      - "SKILL.md"
+      - "example.js"
+    scripts:
+      - "LLMWebWrapper.js"
