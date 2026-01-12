@@ -1,16 +1,52 @@
 {
   "cline.mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@latest"],
+      "env": {
+        "ALLOWED_PATHS": "${workspaceFolder}"
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git@latest"],
+      "env": {
+        "GIT_REPO_PATH": "${workspaceFolder}"
+      }
+    },
     "memory": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory@latest"]
     },
-    "sequentialthinking": {
+    "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequentialthinking@latest"]
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@latest"]
     },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "time": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-time@latest"]
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch@latest"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github@latest"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres@latest"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "${env:DATABASE_URL}"
+      }
     },
     "chrome-devtools": {
       "command": "npx",
@@ -27,12 +63,9 @@
       "command": "npx",
       "args": ["-y", "@executeautomation/playwright-mcp@latest"]
     },
-    "filesystem": {
+    "everything": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem@latest"],
-      "env": {
-        "ALLOWED_PATHS": "${workspaceFolder}"
-      }
+      "args": ["-y", "@modelcontextprotocol/server-everything@latest"]
     }
   }
 }

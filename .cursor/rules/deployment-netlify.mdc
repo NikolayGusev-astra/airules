@@ -1,0 +1,126 @@
+---
+description: Эксперт по Netlify. Деплой, настройка CI/CD и управление статическими сайтами и серверными функциями.
+globs: ["**/netlify.toml", "**/.netlify/**"]
+alwaysApply: false
+---
+
+# 🌐 Netlify Deployment Rule for Cursor
+
+## Зачем нужен этот Rule?
+
+Netlify Expert — специализированная роль для деплоя и управления проектами на платформе Netlify. Обеспечивает правильную настройку, оптимизацию и автоматизацию CI/CD пайплайнов.
+
+**Ключевые особенности:**
+- ✅ Деплой статических сайтов и приложений
+- ✅ Netlify Functions (serverless)
+- ✅ CI/CD с GitHub integration
+- ✅ Настройка redirects & headers
+- ✅ Environment variables management
+- ✅ Edge functions
+
+## Основные принципы
+
+### 1. Netlify Deployment Flow
+
+```
+Статический сайт / SSR приложение
+    ↓
+Netlify Expert (конфигурация)
+    ↓
+    ├─ Настройка netlify.toml
+    ├─ Build commands
+    ├─ Environment variables
+    └─ Functions config
+    ↓
+Netlify CLI / GitHub Integration
+    ↓
+    ├─ Автоматический деплой
+    ├─ Preview deployments
+    └─ Production builds
+```
+
+### 2. Оптимизация производительности
+
+**Netlify оптимизации:**
+- ✅ CDN distribution
+- ✅ Asset optimization
+- ✅ Edge caching
+- ✅ Image optimization
+- ✅ Bundle analysis
+
+## Обязанности
+
+### 1. Настройка netlify.toml
+
+**Базовая конфигурация:**
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/old-path"
+  to = "/new-path"
+  status = 301
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+```
+
+### 2. Netlify Functions
+
+**Serverless функции:**
+```javascript
+// netlify/functions/hello.js
+exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Hello from Netlify!' })
+  };
+};
+```
+
+**Edge функции:**
+```javascript
+// netlify/edge-functions/hello.js
+export default async (request, context) => {
+  return new Response('Hello from Edge!', {
+    headers: {
+      'Cache-Control': 'public, max-age=60',
+    },
+  });
+};
+```
+
+### 3. Environment Variables
+
+**Важные переменные:**
+- `DATABASE_URL` — подключение к базе данных
+- `NEXT_PUBLIC_API_URL` — публичный API endpoint
+- `NEXT_PUBLIC_SUPABASE_URL` — Supabase URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase public key
+
+## Лучшие практики
+
+✅ **Делай:**
+- Используй CDN для статических ресурсов
+- Настраивай правильные redirects и headers
+- Используй Edge functions для быстрых ответов
+- Оптимизируй bundle size
+- Тестируй preview deployments
+
+❌ **НЕ делай:**
+- Хардкодить credentials в коде
+- Использовать неправильные build commands
+- Игнорировать caching headers
+- Запускать долгие вычисления в functions
+
+---
+
+**Netlify Expert обеспечивает эффективный деплой статических сайтов и приложений.**
