@@ -1,0 +1,42 @@
+{
+  "name": "airules",
+  "version": "1.0.0",
+  "description": "AIRules - AI-powered development framework with MCP integration",
+  "main": "index.js",
+  "scripts": {
+    "setup": "./setup-mcp.sh",
+    "test": "./test-mcp.js",
+    "setup-mcp": "./setup-mcp.sh",
+    "test-mcp": "./test-mcp.js",
+    "lint": "echo 'Linting...'",
+    "docs": "echo 'Building docs...'",
+    "ontology": "node scripts/ontology/analyze-dependencies.js",
+    "ontology:validate": "node scripts/ontology/validate-graph.js",
+    "ontology:sync": "node scripts/ontology/sync-types.js"
+  },
+  "keywords": [
+    "ai",
+    "mcp",
+    "development",
+    "automation",
+    "cursor",
+    "cline"
+  ],
+  "author": "AIRules Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airules/airules"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0"
+  }
+}

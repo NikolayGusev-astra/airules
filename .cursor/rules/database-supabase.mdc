@@ -1,0 +1,155 @@
+---
+description: Эксперт по Supabase. Настройка базы данных, аутентификации, хранилища и Edge Functions.
+globs: ["**/supabase/**", "**/*.sql", "**/migrations/**"]
+alwaysApply: false
+---
+
+# 🗄️ Supabase Database Rule for Cursor
+
+## Зачем нужен этот Rule?
+
+Supabase Expert — специализированная роль для работы с платформой Supabase. Обеспечивает правильную настройку базы данных, аутентификации, хранилища и Edge Functions.
+
+**Ключевые особенности:**
+- ✅ Настройка PostgreSQL базы данных
+- ✅ Конфигурация аутентификации (Auth)
+- ✅ Управление хранилищем файлов (Storage)
+- ✅ Разработка Edge Functions
+- ✅ Настройка Row Level Security (RLS)
+- ✅ Realtime subscriptions
+
+## Основные принципы
+
+### 1. RLS (Row Level Security)
+
+**RLS политики — критически важны!**
+- ✅ ВСЕ таблицы должны иметь RLS
+- ✅ Использовать SECURITY DEFINER функции
+- ❌ НЕ ИСПОЛЬЗОВАТЬ NEW./OLD. в RLS
+- ✅ Уникальные ограничения через UNIQUE constraints
+
+### 2. NUMERIC типы для денег
+
+**Критически важно:**
+- ✅ Все денежные значения: NUMERIC(15,2)
+- ❌ ЗАПРЕЩЕНО: Float, Double, money типы
+- ✅ В TypeScript: decimal.js или BigInt
+
+## Обязанности
+
+### 1. Настройка базы данных
+
+**Создание таблиц:**
+```sql
+-- Правильный подход
+CREATE TABLE transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  amount NUMERIC(15,2) NOT NULL,  -- Для денег!
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- RLS политика
+ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own transactions"
+ON transactions
+FOR SELECT
+USING (auth.uid() = user_id);
+```
+
+**RLS без NEW./OLD.:**
+```sql
+-- ❌ ПЛОХО - Использовать NEW./OLD.
+CREATE POLICY "..." ON transactions
+FOR INSERT
+WITH CHECK (NEW.amount > 0);
+
+-- ✅ ХОРОШО - Использовать SECURITY DEFINER
+CREATE OR REPLACE FUNCTION validate_transaction()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.amount <= 0 THEN
+    RAISE EXCEPTION 'Amount must be positive';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
+
+### 2. Аутентификация (Auth)
+
+**Клиентская инициализация:**
+```typescript
+// lib/supabase.ts
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+```
+
+**Auth функции:**
+```typescript
+// Регистрация
+const { data, error } = await supabase.auth.signUp({
+  email: 'user@example.com',
+  password: 'password123',
+});
+
+// Вход
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: 'user@example.com',
+  password: 'password123',
+});
+```
+
+### 3. Хранилище (Storage)
+
+**RLS для storage:**
+```sql
+CREATE POLICY "Authenticated write access"
+ON storage.objects
+FOR INSERT
+WITH CHECK (
+  bucket_id = 'documents' 
+  AND auth.role() = 'authenticated'
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+```
+
+### 4. Edge Functions
+
+**Создание функции:**
+```typescript
+// supabase/functions/hello/index.ts
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+
+serve(async (req) => {
+  const data = await req.json();
+  
+  return new Response(
+    JSON.stringify({ message: `Hello ${data.name}!` }),
+    { headers: { 'Content-Type': 'application/json' } }
+  );
+});
+```
+
+## Лучшие практики
+
+✅ **Делай:**
+- Используй NUMERIC(15,2) для всех денежных полей
+- Включай RLS для всех таблиц
+- Используй SECURITY DEFINER функции вместо NEW./OLD.
+- Настраивай правильные политики доступа
+- Тестируй RLS политики
+
+❌ **НЕ делай:**
+- Использовать Float/Double для денег
+- Использовать NEW./OLD. в RLS политиках
+- Создавать таблицы без RLS
+- Хардкодить credentials в коде
+
+---
+
+**Supabase Expert обеспечивает безопасную и правильную работу с базой данных.**
