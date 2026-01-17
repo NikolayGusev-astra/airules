@@ -1,528 +1,651 @@
-# Онтологическая схема ролевой модели HomeAccounting 🤖
+# 🧠 Ontological Schema for AIRules
 
 ## Обзор онтологии
 
-Онтология представляет собой формализованную модель знаний для многоагентной системы разработки. Она описывает концепты, отношения и правила взаимодействия агентов в процессе создания программного обеспечения.
+Эта схема определяет формальную структуру знаний для AIRules, обеспечивая согласованность между ролями, фазами разработки, артефактами, правилами, доменными областями и технологиями.
 
-```mermaid
-classDiagram
-    %% Основные классы
-    class Agent {
-        +name: string
-        +description: string
-        +capabilities: string[]
-        +rules: Rule[]
-        +phase: Phase
-    }
+## Классы онтологии
 
-    class Phase {
-        +number: int
-        +name: string
-        +description: string
-        +order: int
-        +mandatory: boolean
-        +inputs: Artifact[]
-        +outputs: Artifact[]
-    }
+### Agent (Агенты)
+Агенты — это исполняющие сущности, которые выполняют задачи в соответствии со своим подклассом.
 
-    class Artifact {
-        +name: string
-        +type: string
-        +format: string
-        +location: string
-        +mandatory: boolean
-        +validation_rules: Rule[]
-    }
+**Подклассы Agent:**
+- `Architect` — Архитектор (Phase 1)
+- `Executor` — Разработчик (Phase 2)
+- `Validator` — Валидатор (Phase 3)
+- `Specialist` — Специалист по конкретной доменной области
 
-    class Rule {
-        +name: string
-        +type: RuleType
-        +severity: Severity
-        +description: string
-        +enforcement: Enforcement
-    }
+### Phase (Фазы разработки)
+Фазы — это этапы выполнения задач в процессе разработки.
 
-    class Technology {
-        +name: string
-        +version: string
-        +category: TechCategory
-        +mandatory: boolean
-        +alternatives: string[]
-    }
+**Классы Phase:**
+- `Phase 1` — Архитектура (Architect)
+- `Phase 2` — Выполнение (Executor)
+- `Phase 3` — Валидация (Validator)
 
-    class Domain {
-        +name: string
-        +description: string
-        +rules: Rule[]
-        +technologies: Technology[]
-    }
+### Artifact (Артефакты)
+Артефакты — это документы и файлы, создающиеся в процессе разработки.
 
-    %% Отношения
-    Agent --> Phase : executes
-    Phase --> Artifact : produces
-    Phase --> Artifact : consumes
-    Agent --> Rule : follows
-    Rule --> Technology : constrains
-    Rule --> Domain : belongs_to
-    Domain --> Technology : requires
+**Классы Artifact:**
+- `PLAN.md` — Архитектурный план (создаётся в Phase 1)
+- `source_code` — Исходный код (создаётся в Phase 2)
+- `VALIDATION_REPORT.md` — Отчёт о валидации (создаётся в Phase 3)
+- `DEBUG_REPORT.md` — Отчёт об ошибках (создаётся при Rabbit Hole)
+- `ONTOLOGY_VIOLATION_REPORT.md` — Отчёт об онтологических нарушениях
 
-    %% Перечисления
-    class RuleType {
-        <<enumeration>>
-        TECHNICAL
-        BUSINESS
-        QUALITY
-        SECURITY
-    }
+### Rule (Правила)
+Правила — это ограничения и требования, которые должны соблюдаться при разработке.
 
-    class Severity {
-        <<enumeration>>
-        CRITICAL
-        HIGH
-        MEDIUM
-        LOW
-        WARNING
-    }
+**Типы Rule:**
+- `Technical` — Технические ограничения (типы данных, технологии)
+- `Business` — Бизнес-правила (доменная логика)
+- `Quality` — Правила качества кода (типизация, тестирование)
+- `Security` — Правила безопасности (OWASP, аутентификация)
 
-    class Enforcement {
-        <<enumeration>>
-        AUTOMATIC
-        MANUAL
-        HYBRID
-    }
+### Domain (Доменные области)
+Доменные области — это предметные области знаний.
 
-    class TechCategory {
-        <<enumeration>>
-        FRONTEND_FRAMEWORK
-        BACKEND_FRAMEWORK
-        DATABASE
-        STATE_MANAGEMENT
-        VALIDATION
-        STYLING
-        TESTING
-        BUILD_TOOL
-    }
+**Классы Domain:**
+- `Accounting` — Финансовая учёт (NUMERIC(15,2), Transfer vs Expense)
+- `Technology` — Технологическая область (Node.js, TypeScript, Next.js, React)
+- `Security Testing` — Тестирование безопасности (OWASP Top 10, OWASP ZAP, Burp Suite)
+- `UI Development` — Разработка UI (React, shadcn/ui, Radix UI, Tailwind CSS)
+- `Database` — Базы данных (Prisma, PostgreSQL, migrations)
+
+### Technology (Технологии)
+Технологии — это инструменты и библиотеки, используемые в проекте.
+
+**Классы Technology:**
+- `Next.js` — Фреймворк для React-приложений
+- `React` — Библиотека UI
+- `TypeScript` — Типизация для JavaScript
+- `Prisma` — ORM для баз данных
+- `PostgreSQL` — Реляционная база данных
+- `Zod` — Валидация данных
+- `DOMPurify` — Санитизация HTML (XSS защита)
+- `Tailwind CSS` — Utility-first CSS фреймворк
+- `Radix UI` — Неуправляемые UI компоненты
+- `shadcn/ui` — UI компоненты на основе Radix UI
+- `Framer Motion` — Анимации для React
+- `Zustand` — State management для React
+- `TanStack Query` — Data fetching для React
+- `OWASP ZAP` — Инструмент для тестирования безопасности
+- `Burp Suite` — Инструмент для тестирования безопасности
+- `OpenAI API` — LLM API для промптов
+- `Anthropic API` — LLM API для промптов
+
+## Отношения между классами
+
+### Agent executes Phase
+**Аксиома:** `Agent executes Phase`
+
+**Описание:** Агент может выполнять только те фазы, которые определены для его подкласса.
+
+**Ограничения:**
+```yaml
+name: "agent_executes_phase"
+type: "TECHNICAL"
+severity: "CRITICAL"
+rule: "agent.phase IN [phase_1, phase_2, phase_3]"
+error_message: "⛔ ONTOLOGY VIOLATION: Agent {agent_name} пытается выполнить недопустимую фазу {phase_attempted}. Допустимые фазы для {subclass}: {allowed_phases}."
 ```
 
-## Детальная структура онтологии
+**Примеры:**
+- `Architect` может выполнять только `Phase 1` (Архитектура)
+- `Executor` может выполнять только `Phase 2` (Выполнение)
+- `Validator` может выполнять только `Phase 3` (Валидация)
 
-### 1. Агенты (Agents)
+### Phase produces Artifact
+**Аксиома:** `Phase produces Artifact`
+
+**Описание:** Каждая фаза должна создавать только те артефакты, которые определены для неё.
+
+**Ограничения:**
+```yaml
+name: "phase_produces_artifact"
+type: "TECHNICAL"
+severity: "CRITICAL"
+rule: "phase == phase_1 → artifact == 'docs/PLAN.md'"
+rule: "phase == phase_2 → artifact == 'source_code'"
+rule: "phase == phase_3 → artifact == 'docs/VALIDATION_REPORT.md'"
+error_message: "⛔ ONTOLOGY VIOLATION: Фаза {phase} пытается создать артефакт {artifact_created} вместо {expected_artifact}. Допустимый артефакт для {phase}: {expected_artifact}."
+```
+
+**Примеры:**
+- `Phase 1` (Architect) создаёт `docs/PLAN.md`
+- `Phase 2` (Executor) создаёт `source_code`
+- `Phase 3` (Validator) создаёт `docs/VALIDATION_REPORT.md`
+
+### Agent follows Rule
+**Аксиома:** `Agent follows Rule`
+
+**Описание:** Агент должен следовать правилам, определённым для него.
+
+**Ограничения:**
+```yaml
+name: "agent_follows_rule"
+type: "QUALITY"
+severity: "CRITICAL"
+rule: "rule.type == 'Technical' → technology IN [allowed_technologies]"
+rule: "rule.type == 'Security' → agent implements Security Best Practices"
+error_message: "⛔ ONTOLOGY VIOLATION: Агент {agent_name} нарушает правило {rule_name}. {description}."
+```
+
+**Примеры:**
+- `Executor` (backend-executor) должен следовать техническому правилу `numeric_types_for_money` (NUMERIC(15,2))
+- `Validator` должен следовать правилу `typescript_strict` (no any types)
+
+### Domain requires Technology
+**Аксиома:** `Domain requires Technology`
+
+**Описание:** Доменная область требует использования определённых технологий.
+
+**Ограничения:**
+```yaml
+name: "domain_requires_technology"
+type: "TECHNICAL"
+severity: "CRITICAL"
+rule: "domain == 'Accounting' AND technology IN [Decimal.js, NUMERIC]"
+rule: "domain == 'Security Testing' AND technology IN [OWASP ZAP, Burp Suite]"
+error_message: "⛔ ONTOLOGY VIOLATION: Домен {domain} требует технологий {technologies}, но использована {technology_used}."
+```
+
+**Примеры:**
+- Домен `Accounting` требует использования `Decimal.js` (не Float/Double)
+- Домен `Security Testing` требует использования `OWASP ZAP` или `Burp Suite`
+
+### Technology constrained by Rule
+**Аксиома:** `Technology constrained by Rule`
+
+**Описание:** Правило ограничивает использование технологий.
+
+**Ограничения:**
+```yaml
+name: "technology_constrained_by_rule"
+type: "TECHNICAL"
+severity: "CRITICAL"
+rule: "rule.name == 'typescript_strict' → NO 'any' type allowed"
+rule: "rule.name == 'numeric_types_for_money' → NO 'Float'/'Double Precision' types for money"
+error_message: "⛔ ONTOLOGY VIOLATION: Технология {technology} запрещена правилом {rule_name}. {description}."
+```
+
+**Примеры:**
+- Правило `typescript_strict` запрещает использование типа `any` в TypeScript
+- Правило `numeric_types_for_money` запрещает использование `Float`/`Double Precision` для финансовых операций
+
+## Онтологические классы для SecAudit
+
+### Agent классы
+
+#### Architect
+```yaml
+name: "Architect"
+subclass: "Agent"
+description: "Архитектор. Создает ТЗ."
+expertise:
+  - "Architectural Design"
+  - "Technology Selection"
+  - "Documentation Writing"
+phase: "Phase 1"
+domain: "Technology"
+rules:
+  - "technical_rules"
+  - "domain_requirements"
+```
+
+#### Security Testing Expert (новый)
+```yaml
+name: "Security Testing Expert"
+subclass: "Specialist"
+description: "Эксперт по тестированию безопасности. OWASP Top 10, OWASP ZAP, Burp Suite и других инструментов безопасности."
+expertise:
+  - "OWASP Top 10 Compliance Checking"
+  - "Vulnerability Detection (A01-A10)"
+  - "Security Headers Analysis"
+  - "Cookie Security Analysis"
+  - "SSL/TLS Analysis"
+  - "CORS Policy Validation"
+  - "OWASP ZAP"
+  - "Burp Suite"
+  - "Security Best Practices"
+phase: "Specialist: Security Testing"
+domain: "Security Testing"
+rules:
+  - "security_rules"
+  - "owasp_top_10"
+  - "csp_security"
+  - "ssl_tls_security"
+  - "cookie_security"
+```
+
+#### Next.js 15 Expert (новый)
+```yaml
+name: "Next.js 15 Expert"
+subclass: "Specialist"
+description: "Эксперт по Next.js 15 с App Router, Server Components, Server Actions, Bun runtime."
+expertise:
+  - "Next.js 15 App Router"
+  - "File-based Routing"
+  - "Server Components vs Client Components"
+  - "Server Actions"
+  - "API Routes"
+  - "Middleware"
+  - "Data Fetching & Caching"
+  - "Image Optimization"
+  - "Internationalization (next-intl)"
+  - "Bun Runtime Integration"
+phase: "Specialist: Next.js 15"
+domain: "Technology"
+rules:
+  - "nextjs_rules"
+  - "app_router_rules"
+  - "server_components_rules"
+  - "bun_runtime_rules"
+```
+
+#### React UI Expert (новый)
+```yaml
+name: "React UI Expert"
+subclass: "Specialist"
+description: "Эксперт по React 19 UI разработке с shadcn/ui, Radix UI, Tailwind CSS, Zustand, TanStack Query для SecAudit."
+expertise:
+  - "React 19 Features"
+  - "shadcn/ui + Radix UI Components"
+  - "Tailwind CSS и cn() Utility"
+  - "Zustand State Management"
+  - "TanStack React Query"
+  - "Framer Motion Animations"
+  - "Lucide React Icons"
+  - "Data Visualization с Recharts"
+  - "Form Handling с react-hook-form и Zod"
+  - "Accessibility (a11y)"
+phase: "Specialist: UI Development"
+domain: "UI Development"
+rules:
+  - "react_rules"
+  - "tailwind_rules"
+  - "shadcn_rules"
+  - "accessibility_rules"
+  - "zustand_rules"
+  - "tanstack_query_rules"
+```
+
+#### Prisma Expert (новый)
+```yaml
+name: "Prisma Expert"
+subclass: "Specialist"
+description: "Эксперт по Prisma ORM с глубокими знаниями database schema design, migrations, query optimization и интеграцией с PostgreSQL для SecAudit."
+expertise:
+  - "Prisma Schema Design"
+  - "Prisma Client Setup"
+  - "Migrations & Schema Evolution"
+  - "Query Operations (findMany, findUnique, create, update, delete, upsert)"
+  - "Advanced Queries (filtering, sorting, pagination, relations, selection, aggregation, transactions)"
+  - "Query Optimization (indexes, composite indexes, include vs select, cursor-based pagination, N+1 problem)"
+  - "Transactions & Concurrency (sequential, interactive, optimistic, pessimistic)"
+  - "Prisma Extensions (Accelerate, Pulse, custom extensions)"
+  - "Error Handling (PrismaClientKnownRequestError, PrismaClientUnknownRequestError, PrismaClientInitializationError)"
+  - "Seeding & Testing (seed files, test database, mocking)"
+phase: "Specialist: Database"
+domain: "Database"
+rules:
+  - "prisma_rules"
+  - "sql_rules"
+  - "transaction_rules"
+  - "query_optimization_rules"
+  - "error_handling_rules"
+```
+
+#### AI Prompt Engineering Expert (новый)
+```yaml
+name: "AI Prompt Engineering Expert"
+subclass: "Specialist"
+description: "Эксперт по Prompt Engineering для SecAudit, специализирующийся на создании эффективных промптов для AI-исправления уязвимостей безопасности."
+expertise:
+  - "Prompt Design Patterns (Chain-of-Thought, Few-Shot Learning, Role Prompting, Context Injection)"
+  - "SecAudit-Specific Prompts (OWASP Top 10 Fix Prompts, CSP Improvement Prompts, Security Header Prompts, Cookie Security Prompts, SSL/TLS Fix Prompts)"
+  - "Prompt Optimization (Token Efficiency, Clear Instructions, Example Injection, Constraint Definition)"
+  - "Prompt Testing & Validation (A/B Testing, Output Quality Metrics, Iterative Refinement)"
+phase: "Specialist: AI Prompt Engineering"
+domain: "Technology"
+rules:
+  - "prompt_engineering_rules"
+  - "owasp_rules"
+  - "context_rules"
+  - "token_efficiency_rules"
+```
+
+### Domain классы для SecAudit
+
+#### Security Testing Domain
+```yaml
+name: "Security Testing"
+description: "Доменная область для тестирования безопасности."
+requires:
+  - "OWASP Top 10"
+  - "OWASP ZAP"
+  - "Burp Suite"
+  - "Security Headers"
+  - "Cookie Security"
+  - "SSL/TLS"
+  - "CSP"
+  - "CORS"
+expertise:
+  - "OWASP Top 10 Compliance Checking"
+  - "Vulnerability Detection"
+  - "Security Headers Analysis"
+  - "Cookie Security Analysis"
+  - "SSL/TLS Analysis"
+```
+
+#### Next.js 15 Domain
+```yaml
+name: "Next.js 15"
+description: "Доменная область для Next.js 15."
+requires:
+  - "Next.js 15.3.6"
+  - "React 19.0.0"
+  - "next-auth 4.24.11"
+  - "next-intl 4.3.4"
+  - "TypeScript 5"
+  - "Bun Runtime"
+expertise:
+  - "App Router"
+  - "Server Components"
+  - "Server Actions"
+  - "API Routes"
+  - "Middleware"
+  - "Data Fetching"
+  - "Image Optimization"
+```
+
+#### React UI Domain
+```yaml
+name: "React UI"
+description: "Доменная область для UI разработки."
+requires:
+  - "React 19.0.0"
+  - "shadcn/ui"
+  - "Radix UI"
+  - "Tailwind CSS 4"
+  - "Framer Motion 12.23.2"
+  - "Zustand 5.0.6"
+  - "TanStack Query 5.82.0"
+  - "react-hook-form 7.60.0"
+  - "Zod 4.0.2"
+  - "Lucide React 0.525.0"
+  - "Recharts 2.15.4"
+  - "next-themes 0.4.6"
+expertise:
+  - "shadcn/ui Components"
+  - "Tailwind CSS"
+  - "Zustand State"
+  - "TanStack Query"
+  - "Form Handling"
+  - "Framer Motion Animations"
+  - "Lucide Icons"
+  - "Recharts Data Visualization"
+  - "Accessibility (a11y)"
+```
+
+#### Prisma Domain
+```yaml
+name: "Prisma"
+description: "Доменная область для баз данных."
+requires:
+  - "Prisma 6.1.0"
+  - "PostgreSQL 16"
+  - "TypeScript 5"
+expertise:
+  - "Schema Design"
+  - "Migrations"
+  - "Query Operations"
+  - "Advanced Queries"
+  - "Query Optimization"
+  - "Transactions"
+  - "Error Handling"
+  - "Prisma Extensions"
+```
+
+#### AI Prompt Engineering Domain
+```yaml
+name: "AI Prompt Engineering"
+description: "Доменная область для Prompt Engineering."
+requires:
+  - "OpenAI GPT-4 / GPT-4 Turbo API"
+  - "Claude 3.5 Sonnet API"
+  - "Anthropic Prompt Engineering Guidelines"
+expertise:
+  - "Chain-of-Thought (CoT)"
+  - "Few-Shot Learning"
+  - "Role Prompting"
+  - "Context Injection"
+  - "Prompt Optimization"
+  - "Prompt Testing & Validation"
+```
+
+### Technology классы для SecAudit
 
 ```yaml
-Agent:
-  subclasses:
-    - Architect
-    - Executor
-    - Validator
-    - Specialist
+name: "Next.js"
+version: "15.3.6"
+description: "Фреймворк для React-приложений с App Router."
 
-  properties:
-    - name: string (required)
-    - description: string (required)
-    - capabilities: string[] (required)
-    - rules: Rule[] (required)
-    - phase: Phase (required)
-    - context_files: string[] (optional)
+name: "React"
+version: "19.0.0"
+description: "Библиотека UI."
 
-  instances:
-    - architect: "Создает технические задания"
-    - nextjs_executor: "Реализует код на Next.js"
-    - validator: "Проверяет качество кода"
-    - import_specialist: "Обрабатывает импорт данных"
-    - qa_tester: "Проводит E2E тестирование"
-    - account_auditor: "Аудитирует бухгалтерскую логику"
-    - refactoring_auditor: "Анализирует код на улучшения"
-    - context7_researcher: "Ищет актуальную документацию"
+name: "TypeScript"
+version: "5"
+description: "Типизация для JavaScript."
+
+name: "Prisma"
+version: "6.1.0"
+description: "ORM для баз данных."
+
+name: "PostgreSQL"
+version: "16"
+description: "Реляционная база данных."
+
+name: "Zod"
+version: "4.0.2"
+description: "Валидация данных."
+
+name: "DOMPurify"
+version: "latest"
+description: "Санитизация HTML (XSS защита)."
+
+name: "Tailwind CSS"
+version: "4"
+description: "Utility-first CSS фреймворк."
+
+name: "Radix UI"
+version: "latest"
+description: "Неуправляемые UI компоненты."
+
+name: "shadcn/ui"
+version: "latest"
+description: "UI компоненты на основе Radix UI."
+
+name: "Framer Motion"
+version: "12.23.2"
+description: "Анимации для React."
+
+name: "Zustand"
+version: "5.0.6"
+description: "State management для React."
+
+name: "TanStack Query"
+version: "5.82.0"
+description: "Data fetching для React."
+
+name: "react-hook-form"
+version: "7.60.0"
+description: "Form handling."
+
+name: "next-auth"
+version: "4.24.11"
+description: "Аутентификация."
+
+name: "next-intl"
+version: "4.3.4"
+description: "Интернационализация."
+
+name: "Lucide React"
+version: "0.525.0"
+description: "Иконки."
+
+name: "Recharts"
+version: "2.15.4"
+description: "Data visualization."
+
+name: "OWASP ZAP"
+version: "latest"
+description: "Инструмент для тестирования безопасности."
+
+name: "Burp Suite"
+version: "latest"
+description: "Инструмент для тестирования безопасности."
+
+name: "OpenAI API"
+version: "latest"
+description: "LLM API для промптов."
+
+name: "Anthropic API"
+version: "latest"
+description: "LLM API для промптов."
+
+name: "Bun"
+version: "latest"
+description: "JavaScript runtime."
 ```
 
-### 2. Фазы (Phases)
+### Rule классы для SecAudit
 
+#### Technical Rules
 ```yaml
-Phase:
-  properties:
-    - number: int (required, 1-7)
-    - name: string (required)
-    - description: string (required)
-    - order: int (required)
-    - mandatory: boolean (required)
-    - inputs: Artifact[] (optional)
-    - outputs: Artifact[] (required)
-    - agent: Agent (required)
-    - next_phase: Phase (optional)
-    - error_handling: ErrorHandler (optional)
-
-  instances:
-    - phase_1:
-        number: 1
-        name: "Architect"
-        mandatory: true
-        agent: architect
-        outputs: ["docs/PLAN.md"]
-        next_phase: phase_2
-
-    - phase_2:
-        number: 2
-        name: "Next.js Executor"
-        mandatory: true
-        agent: nextjs_executor
-        inputs: ["docs/PLAN.md"]
-        outputs: ["source_code", "docs/DEBUG_REPORT.md"]
-        next_phase: phase_3
-
-    - phase_3:
-        number: 3
-        name: "Validator"
-        mandatory: true
-        agent: validator
-        inputs: ["source_code", "docs/PLAN.md"]
-        outputs: ["validation_report"]
-        next_phase: phase_4
-
-    - phase_4:
-        number: 4
-        name: "Import Specialist"
-        mandatory: false
-        agent: import_specialist
-        condition: "requires_data_import"
-        outputs: ["docs/IMPORT_REPORT.md"]
-
-    - phase_5:
-        number: 5
-        name: "QA Tester"
-        mandatory: false
-        agent: qa_tester
-        condition: "requires_e2e_testing"
-        outputs: ["docs/QA_REPORT.md"]
-
-    - phase_6:
-        number: 6
-        name: "Account Auditor"
-        mandatory: true
-        agent: account_auditor
-        condition: "financial_operations"
-        outputs: ["docs/ACCOUNT_AUDIT_REPORT.md"]
-
-    - phase_7:
-        number: 7
-        name: "Refactoring Auditor"
-        mandatory: false
-        agent: refactoring_auditor
-        condition: "refactoring_requested"
-        outputs: ["refactoring_report"]
+name: "typescript_strict"
+type: "Technical"
+severity: "CRITICAL"
+description: "TypeScript код должен быть в строгом режиме: no any types, только интерфейсы и типы."
+enforcement: "AUTOMATIC"
+rule: "NO 'any' type allowed in TypeScript code"
+error_message: "⛔ ONTOLOGY VIOLATION: Использован тип 'any' в TypeScript. Используйте интерфейсы или типы вместо 'any'."
 ```
 
-### 3. Артефакты (Artifacts)
-
+#### Security Rules
 ```yaml
-Artifact:
-  subclasses:
-    - Document
-    - SourceCode
-    - Report
-    - Configuration
+name: "csp_security"
+type: "Security"
+severity: "CRITICAL"
+description: "Content Security Policy должна быть безопасной: без unsafe-inline/unsafe-eval, с nonce-based script execution."
+enforcement: "AUTOMATIC"
+rule: "NO 'unsafe-inline' OR 'unsafe-eval' in CSP directives"
+error_message: "⛔ SECURITY VIOLATION: CSP содержит unsafe-inline или unsafe-eval директивы. Используйте nonce-based script execution."
 
-  properties:
-    - name: string (required)
-    - type: ArtifactType (required)
-    - format: string (required)
-    - location: string (required)
-    - mandatory: boolean (required)
-    - validation_rules: Rule[] (optional)
-    - schema: object (optional)
+name: "cookie_security"
+type: "Security"
+severity: "HIGH"
+description: "Cookies для сессий должны иметь флаги безопасности: HttpOnly, Secure, SameSite."
+enforcement: "AUTOMATIC"
+rule: "Session cookies MUST have HttpOnly, Secure, and SameSite attributes"
+error_message: "⛔ SECURITY VIOLATION: Сессионный cookie не имеет необходимых флагов безопасности: HttpOnly, Secure, SameSite."
 
-  instances:
-    - plan_document:
-        name: "docs/PLAN.md"
-        type: Document
-        format: "markdown"
-        location: "docs/PLAN.md"
-        mandatory: true
-        validation_rules: ["has_architecture", "has_tech_stack", "has_implementation_plan"]
+name: "ssl_tls_security"
+type: "Security"
+severity: "CRITICAL"
+description: "SSL/TLS версия должна быть актуальной: минимум TLS 1.2, сертификат должен быть валидным."
+enforcement: "AUTOMATIC"
+rule: "TLS version >= 1.2 AND certificate NOT expired"
+error_message: "⛔ SECURITY VIOLATION: Устаревшая TLS версия или истёкший сертификат."
 
-    - source_code:
-        name: "Source Code"
-        type: SourceCode
-        format: "typescript"
-        location: "src/"
-        mandatory: true
-        validation_rules: ["typescript_strict", "no_any_types", "jsdoc_required"]
-
-    - validation_report:
-        name: "Validation Report"
-        type: Report
-        format: "markdown"
-        location: "docs/VALIDATION_REPORT.md"
-        mandatory: true
-        validation_rules: ["has_pass_fail_status", "has_detailed_reasons"]
+name: "xss_prevention"
+type: "Security"
+severity: "CRITICAL"
+description: "XSS защита: использование DOMPurify, избегание dangerouslySetInnerHTML без санитизации."
+enforcement: "AUTOMATIC"
+rule: "Use DOMPurify.sanitize() for user input; Avoid dangerouslySetInnerHTML without sanitization"
+error_message: "⛔ SECURITY VIOLATION: Потенциальная XSS уязвимость. Используйте DOMPurify для санитизации пользовательского ввода."
 ```
 
-### 4. Правила (Rules)
-
+#### Quality Rules
 ```yaml
-Rule:
-  subclasses:
-    - TechnicalRule
-    - BusinessRule
-    - QualityRule
-    - SecurityRule
+name: "prompt_quality"
+type: "Quality"
+severity: "MEDIUM"
+description: "Промпты должны быть чёткими, конкретными и с ограничениями."
+enforcement: "AUTOMATIC"
+rule: "Prompt instructions MUST be clear, specific, and include constraints"
+error_message: "⛔ PROMPT QUALITY VIOLATION: Промпт размыт или содержит неопределённые инструкции. Сделайте промпт более конкретным."
 
-  properties:
-    - name: string (required)
-    - type: RuleType (required)
-    - severity: Severity (required)
-    - description: string (required)
-    - enforcement: Enforcement (required)
-    - domain: Domain (optional)
-    - condition: string (optional)
-    - error_message: string (required)
-
-  instances:
-    - tech_stack_rule:
-        name: "tech_stack_compliance"
-        type: TECHNICAL
-        severity: CRITICAL
-        description: "Код должен использовать только разрешенные технологии"
-        enforcement: AUTOMATIC
-        domain: technology
-        error_message: "Использована запрещенная технология: {technology}"
-
-    - numeric_types_rule:
-        name: "numeric_types_for_money"
-        type: BUSINESS
-        severity: CRITICAL
-        description: "Денежные суммы должны использовать NUMERIC(15,2)"
-        enforcement: AUTOMATIC
-        domain: accounting
-        error_message: "Использован неправильный тип для денег: {type}"
-
-    - pending_balance_rule:
-        name: "pending_not_affect_balance"
-        type: BUSINESS
-        severity: CRITICAL
-        description: "Pending транзакции не влияют на баланс"
-        enforcement: AUTOMATIC
-        domain: accounting
-        error_message: "Pending транзакция изменяет баланс"
+name: "token_efficiency"
+type: "Quality"
+severity: "LOW"
+description: "Оптимизация использования токенов в промптах."
+enforcement: "AUTOMATIC"
+rule: "Minimize token usage in prompts while maintaining quality"
+error_message: "⛔ TOKEN EFFICIENCY VIOLATION: Промпт слишком длинный. Оптимизируйте использование токенов."
 ```
 
-### 5. Домены (Domains)
+## Артефакты
 
-```yaml
-Domain:
-  properties:
-    - name: string (required)
-    - description: string (required)
-    - rules: Rule[] (required)
-    - technologies: Technology[] (required)
-    - artifacts: Artifact[] (optional)
+### PLAN.md (Architect Artifact)
+Артефакт, создаваемый в Phase 1 (Architect). Содержит:
+- Технологический стек
+- Архитектурные решения
+- План реализации
+- Ограничения и правила
 
-  instances:
-    - technology_domain:
-        name: "Technology Stack"
-        description: "Правила использования технологий"
-        rules: ["tech_stack_compliance", "version_constraints"]
-        technologies: ["next.js", "react", "supabase", "zustand"]
+### source_code (Executor Artifact)
+Артефакт, создаваемый в Phase 2 (Executor). Содержит:
+- TypeScript/Node.js код
+- Реализация бизнес-логики
+- API endpoints
+- UI компоненты
 
-    - accounting_domain:
-        name: "Accounting Logic"
-        description: "Бухгалтерские правила и ограничения"
-        rules: ["numeric_types_for_money", "pending_not_affect_balance", "credit_card_transfers"]
-        technologies: ["decimal.js", "supabase"]
-        artifacts: ["ACCOUNTING_CONSTITUTION.md"]
+### VALIDATION_REPORT.md (Validator Artifact)
+Артефакт, создаваемый в Phase 3 (Validator). Содержит:
+- Результаты проверки
+- Список нарушений
+- Рекомендации по исправлению
 
-    - quality_domain:
-        name: "Code Quality"
-        description: "Стандарты качества кода"
-        rules: ["typescript_strict", "jsdoc_required", "function_length_limit"]
-        technologies: ["typescript", "eslint"]
-```
+## Правила валидации
 
-### 6. Технологии (Technologies)
+### TypeScript Strict Mode
+- ❌ **Запрещено:** Использование типа `any`
+- ✅ **Допустимо:** Интерфейсы (`interface`, `type`), Типы (`type`), Union types
 
-```yaml
-Technology:
-  properties:
-    - name: string (required)
-    - version: string (required)
-    - category: TechCategory (required)
-    - mandatory: boolean (required)
-    - alternatives: string[] (optional)
-    - constraints: string[] (optional)
+### Numeric Types for Money
+- ❌ **Запрещено:** Использование `Float`/`Double Precision`
+- ✅ **Допустимо:** `BigInt` или `Decimal.js` для финансовых операций
 
-  instances:
-    - nextjs:
-        name: "Next.js"
-        version: "15.x"
-        category: FRONTEND_FRAMEWORK
-        mandatory: true
-        constraints: ["no_pages_router", "app_router_only"]
+### OWASP Top 10 Compliance
+- ✅ **Допустимо:** CSP без `unsafe-inline`/`unsafe-eval`
+- ✅ **Допустимо:** Cookies с `HttpOnly`, `Secure`, `SameSite`
+- ✅ **Допустимо:** TLS 1.2+ и валидные сертификаты
 
-    - react:
-        name: "React"
-        version: "19.x"
-        category: FRONTEND_FRAMEWORK
-        mandatory: true
-        constraints: ["strict_mode_required"]
+## Использование онтологической схемы
 
-    - supabase:
-        name: "Supabase"
-        version: "2.x"
-        category: DATABASE
-        mandatory: true
-        constraints: ["direct_client_only", "no_prisma"]
+### При создании новой роли:
+1. Определить `name` — уникальное имя роли
+2. Определить `subclass` — `Agent` (Architect, Executor, Validator) или `Specialist`
+3. Определить `description` — краткое описание ответственности
+4. Определить `expertise` — список экспертиз ролей
+5. Определить `phase` — фаза выполнения
+6. Определить `domain` — доменная область
+7. Определить `rules` — список файлов правил
 
-    - typescript:
-        name: "TypeScript"
-        version: "5.x"
-        category: BUILD_TOOL
-        mandatory: true
-        constraints: ["strict_mode", "no_any_types"]
-```
-
-## Отношения и аксиомы
-
-### Основные отношения
-
-```owl
-# Агент выполняет фазу
-Agent ⊑ ∃executes.Phase
-
-# Фаза производит артефакт
-Phase ⊑ ∃produces.Artifact
-
-# Фаза потребляет артефакт
-Phase ⊑ ∃consumes.Artifact
-
-# Агент следует правилам
-Agent ⊑ ∃follows.Rule
-
-# Правило ограничивает технологию
-Rule ⊑ ∃constrains.Technology
-
-# Домен содержит правила
-Domain ⊑ ∃contains.Rule
-
-# Домен требует технологии
-Domain ⊑ ∃requires.Technology
-```
-
-### Аксиомы валидации
-
-```owl
-# Критические правила всегда применяются автоматически
-CriticalRule ⊑ AutomaticEnforcementRule
-
-# Финансовые операции требуют аудита
-FinancialOperation ⊑ ∃requires.AccountAuditor
-
-# Новые технологии требуют проверки Context7
-NewTechnology ⊑ ∃requires.Context7Researcher
-
-# Ошибки 2+ раза останавливают выполнение
-RepeatedError ⊑ ∃triggers.HumanIntervention
-
-# Успешная валидация требует git commit
-ValidationPassed ⊑ ∃requires.GitCommit
-```
-
-## Контекстные правила
-
-### Rabbit Hole Detection
-
-```yaml
-context_rules:
-  - name: "error_repetition_detection"
-    condition: "same_error_count >= 2"
-    action: "stop_execution"
-    output: "docs/DEBUG_REPORT.md"
-    message: "⛔ ОШИБКА: Зафиксировал проблему. Требуется [архитектурная/человеческая] помощь."
-
-  - name: "validation_failure_handling"
-    condition: "validation_result == 'FAILED' AND severity == 'CRITICAL'"
-    action: "return_to_phase_2"
-    output: "validation_report"
-    message: "⛔ VALIDATION FAILED: {reason}. Переписать, используя {correct_approach}."
-
-  - name: "successful_completion"
-    condition: "all_phases_passed AND validation_passed"
-    action: "git_commit"
-    output: "docs/PROJECT_STATE.md"
-    message: "✅ VALIDATION PASSED. Задача выполнена корректно."
-```
-
-### Автоматические переходы
-
-```yaml
-transition_rules:
-  - from_phase: 1
-    to_phase: 2
-    condition: "docs/PLAN.md exists"
-    automatic: true
-
-  - from_phase: 2
-    to_phase: 3
-    condition: "source_code_complete AND eslint_passed"
-    automatic: true
-
-  - from_phase: 3
-    to_phase: 4
-    condition: "validation_passed AND requires_import"
-    automatic: false
-
-  - from_phase: 3
-    to_phase: 5
-    condition: "validation_passed AND requires_testing"
-    automatic: false
-
-  - from_phase: 3
-    to_phase: 6
-    condition: "validation_passed AND financial_operations"
-    automatic: true
-```
-
-## Визуализация онтологии
-
-```mermaid
-graph TB
-    subgraph "📋 Концепты"
-        A[Agent<br/>Агенты]
-        P[Phase<br/>Фазы]
-        R[Rule<br/>Правила]
-        T[Technology<br/>Технологии]
-        D[Domain<br/>Домены]
-        Ar[Artifact<br/>Артефакты]
-    end
-
-    subgraph "🔗 Отношения"
-        A -->|executes| P
-        P -->|produces| Ar
-        P -->|consumes| Ar
-        A -->|follows| R
-        R -->|constrains| T
-        D -->|contains| R
-        D -->|requires| T
-    end
-
-    subgraph "⚡ Поведение"
-        E[Error<br/>Обработка]
-        V[Validation<br/>Валидация]
-        Tr[Transition<br/>Переходы]
-    end
-
-    R -->|triggers| E
-    P -->|validates| V
-    P -->|transitions| Tr
-
-    %% Стилизация
-    classDef conceptClass fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef relationClass fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef behaviorClass fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-
-    class A,P,R,T,D,Ar conceptClass
-    class relationClass
-    class E,V,Tr behaviorClass
-```
+### При создании нового правила:
+1. Определить `name` — уникальное имя правила
+2. Определить `type` — тип правила (`Technical`, `Business`, `Quality`, `Security`)
+3. Определить `severity` — уровень критичности (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`)
+4. Определить `description` — описание правила
+5. Определить `rule` — логическое правило проверки
+6. Определить `enforcement` — тип принуждения (`AUTOMATIC` или `MANUAL`)
+7. Определить `error_message` — сообщение об ошибке
 
 ---
 
-*Онтологическая схема определяет формальную структуру знаний для многоагентной системы разработки HomeAccounting* 📚
+**Версия:** 1.0.0
+**Последнее обновление:** 2026-01-17
+**Домены:** Accounting, Technology, Security Testing, UI Development, Database, AI Prompt Engineering

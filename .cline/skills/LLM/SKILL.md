@@ -1,30 +1,35 @@
 ---
 name: LLM
-description: Implement large language model (LLM) chat completions using the z-ai-web-dev-sdk. Use this skill when the user needs to build conversational AI applications, chatbots, AI assistants, or any text generation features. Supports multi-turn conversations, system prompts, and context management.
+description: Implement LLM chat completions using MCP tools (Playwright or Chrome DevTools). Use this skill when user needs to interact with LLM services through browser automation without API keys. Supports multi-turn conversations, system prompts, and context management.
 license: MIT
 ---
 
 # LLM (Large Language Model) Skill
 
-This skill guides the implementation of chat completions functionality using the z-ai-web-dev-sdk package, enabling powerful conversational AI and text generation capabilities.
+**;NG52>5 A;>2> 4;O 0:B820F88:** `0NHL =0`
 
-## Skills Path
+---
 
-**Skill Location**: `{project_path}/skills/llm`
+## =Ö ?8A0=85
 
-this skill is located at above path in your project.
+LLM Web Skill - MB> A:8;; 4;O 2708<>459AB28O A LLM A5@28A0<8 G5@57 1@0C75@=CN 02B><0B870F8N, 8A?>;L7CO MCP 8=AB@C<5=BK (Playwright 8;8 Chrome DevTools), 2<5AB> ?@O<KE API 2K7>2>2.
 
-**Reference Scripts**: Example test scripts are available in the `{Skill Location}/scripts/` directory for quick testing and reference. See `{Skill Location}/scripts/chat.ts` for a working example.
+**;02=0O >A>15==>ABL:**  B@51C5B API :;NG59! A?>;L7C5B MCP 8=AB@C<5=BK 4;O 2708<>459AB28O A web-8=B5@D59A0<8 LLM A5@28A>2.
 
-## Overview
+---
 
-The LLM skill allows you to build applications that leverage large language models for natural language understanding and generation, including chatbots, AI assistants, content generation, and more.
+## <¯ >340 8A?>;L7>20BL
 
-**IMPORTANT**: z-ai-web-dev-sdk MUST be used in backend code only. Never use it in client-side code.
+ **A?>;L7C9 MB>B A:8;; :>340:**
+- C6=> 8A?>;L7>20BL LLM 157 API :;NG59
+- %>G5HL 2708<>459AB2>20BL A chat.z.ai G5@57 1@0C75@
+- C6=0 15A?;0B=0O 0;LB5@=0B820 API
+- "@51C5BAO 02B><0B870F8O web-8=B5@D59A0 LLM
 
-## Prerequisites
-
-The z-ai-web-dev-sdk package is already installed. Import it as shown in the examples below.
+L ** 8A?>;L7C9 MB>B A:8;; :>340:**
+- # B51O 5ABL API :;NG (;CGH5 8A?>;L7>20BL LLM-openai)
+- C6=0 2KA>:0O ?@>872>48B5;L=>ABL (API 1KAB@55 browser automation)
+- "@51C5BAO streaming >B25B>2 (>3@0=8G5==0O ?>445@6:0)
 
 ## CLI Usage (For Simple Tasks)
 
